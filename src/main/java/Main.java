@@ -35,7 +35,7 @@ public class Main {
             }
         }
 
-        Thread s = new Server();
+        Thread s = new Server(contacts);
         s.start();
 
 //        contacts.add(Contact.createContact("Teszt", "192.168.1.243"));
@@ -65,7 +65,8 @@ public class Main {
     }
 
     public static void removeConnection(Connection c){
-        connections.remove(c);
-        System.out.println("Connection closed");
+        if (connections.remove(c)){
+            System.out.println("Connection closed");
+        }
     }
 }

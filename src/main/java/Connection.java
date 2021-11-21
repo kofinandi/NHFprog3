@@ -30,7 +30,9 @@ public class Connection {
 
     void close() throws IOException {
         s.close();
-        contact.disconnect();
+        if (contact != null){
+            contact.disconnect();
+        }
         Main.removeConnection(this);
     }
 
