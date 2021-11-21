@@ -5,14 +5,16 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 
 public class MessageListener extends Thread{
-    private Socket s;
+    private Socket socket;
     private BufferedReader in;
-    private Connection c;
+    private Connection connection;
+    private Contact contact;
 
-    public MessageListener(Socket socket, Connection connection) throws IOException {
-        c = connection;
-        s = socket;
-        in = new BufferedReader(new InputStreamReader(s.getInputStream()));
+    public MessageListener(Socket s, Connection c1, Contact c2) throws IOException {
+        socket = s;
+        connection = c1;
+        contact = c2;
+        in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
     }
 
     @Override
@@ -23,7 +25,7 @@ public class MessageListener extends Thread{
                 ins = in.readLine();
             } catch (IOException e) {
                 try {
-                    c.closed();
+                    connection.close();
                 } catch (IOException ee) {
                     e.printStackTrace();
                 }
@@ -32,14 +34,14 @@ public class MessageListener extends Thread{
 
             if (ins == null){
                 try {
-                    c.closed();
+                    connection.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
                 return;
             }
 
-            System.out.println(ins);
+            contact.receive(ins);
         }
     }
 }

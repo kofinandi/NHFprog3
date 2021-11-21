@@ -19,9 +19,12 @@ public class Server extends Thread{
 
         while(true){
             try {
-                Main.addConnection(new Connection(server.accept()));
+                Connection tmp = new Connection(server.accept());
+                tmp.init(new Contact("Valami", tmp.getAddress(), tmp)); //Itt kell ellenorzni majd, hogy van-e mar ilyen kontaktunk, es azt beallitani
+                tmp.send("1");
+                Main.addConnection(tmp);
             } catch (IOException e) {
-                System.out.println("Server connection request error.");
+                System.out.println("Connection request error.");
             }
         }
     }

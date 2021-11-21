@@ -1,4 +1,6 @@
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 
 public class Main {
@@ -7,9 +9,11 @@ public class Main {
     public static void main(String[] args) throws IOException { //Exceptiont kezelni kell
         Thread s = new Server();
         s.start();
-        Connection c = new Connection("192.168.1.243");
-        c.send("Hello");
-        c.send("Hali");
+
+        Contact c = Contact.createContact("Teszt", "192.168.1.243");
+        if (c != null){
+            c.send("Haho");
+        }
     }
 
     public static void addConnection(Connection c){

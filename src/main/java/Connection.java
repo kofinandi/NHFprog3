@@ -1,35 +1,45 @@
 import java.io.*;
-import java.net.InetAddress;
-import java.net.Socket;
-import java.net.UnknownHostException;
+import java.net.*;
 
 public class Connection {
-    Socket s;
-    PrintWriter out;
-    MessageListener in;
+    private Socket s = new Socket();
+    private PrintWriter out;
+    private MessageListener in;
+    private Contact contact;
+
     public Connection(Socket socket) throws IOException {
         s = socket;
-        init();
     }
 
-    public Connection(String address) throws IOException {
-        s = new Socket(InetAddress.getByName(address), 50000);
-        init();
+    public Connection(InetAddress address) throws IOException, ConnectionDenied {
+        SocketAddress socketAddress = new InetSocketAddress(address, 50000);
+        s.connect(socketAddress, 1500);
+        BufferedReader accept = new BufferedReader(new InputStreamReader(s.getInputStream()));
+        if (!accept.readLine().equals("1")){
+            s.close();
+            throw new ConnectionDenied();
+        }
     }
 
-    private void init() throws IOException {
+    public void init(Contact c) throws IOException {
+        contact = c;
         out = new PrintWriter(new OutputStreamWriter(s.getOutputStream()));
-        in = new MessageListener(s, this);
+        in = new MessageListener(s, this, c);
         in.start();
     }
 
-    void closed() throws IOException {
+    void close() throws IOException {
         s.close();
+        contact.disconnect();
         Main.removeConnection(this);
     }
 
     public void send(String s){
         out.println(s);
         out.flush();
+    }
+
+    public InetAddress getAddress(){
+        return s.getInetAddress();
     }
 }
