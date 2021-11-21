@@ -6,9 +6,10 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class Server extends Thread{
+    private ServerSocket server;
+
     @Override
     public void run() {
-        ServerSocket server = null;
         try {
             server = new ServerSocket(50000);
         } catch (IOException e) {
@@ -16,9 +17,9 @@ public class Server extends Thread{
             System.exit(1);
         }
 
-        while (true){
+        while(true){
             try {
-                Socket socket = server.accept();
+                Main.addConnection(new Connection(server.accept()));
             } catch (IOException e) {
                 System.out.println("Server connection request error.");
             }

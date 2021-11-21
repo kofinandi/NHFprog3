@@ -3,11 +3,12 @@ import java.util.ArrayList;
 public class Main {
     private static ArrayList<Connection> connections = new ArrayList<Connection>();
 
-    public void main(){
-
+    public static void main(String[] args){
+        Thread s = new Server();
+        s.start();
     }
 
-    public void addConnection(Connection c){
+    public static void addConnection(Connection c){
         connections.add(c);
     }
 }

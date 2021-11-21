@@ -1,20 +1,29 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.net.InetAddress;
 import java.net.Socket;
+import java.net.UnknownHostException;
 
 public class Connection {
     Socket s;
-    public Connection(Socket socket){
+    PrintWriter out;
+    MessageListener in;
+    public Connection(Socket socket) throws IOException { // Exceptiont kezelni kell
         s = socket;
-        InputStream is = null;
+        out = new PrintWriter(new OutputStreamWriter(s.getOutputStream()));
+        in = new MessageListener(s.getInputStream());
+        in.start();
+    }
+
+    public Connection(String address) throws UnknownHostException {
         try {
-            is = s.getInputStream();
-            BufferedReader in = new BufferedReader(new InputStreamReader(is));
-            System.out.println(in.readLine());
+            s = new Socket(InetAddress.getByName(address), 50000, InetAddress.getLocalHost(), 50000);
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void send(String s){
+        out.println(s);
+        out.flush();
     }
 }
