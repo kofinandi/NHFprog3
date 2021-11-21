@@ -48,6 +48,7 @@ public class Contact {
         try {
             inaddress = InetAddress.getByName(inip);
         } catch (UnknownHostException e) {
+            System.out.println("Invalid address in JSON!");
             return null;
         }
 
@@ -56,15 +57,8 @@ public class Contact {
         try {
             connection = new Connection(inaddress);
         }
-        catch (SocketTimeoutException t){
-            System.out.println("Cannot connect to contact!");
-            return null;
-        } catch (IOException e) {
-            System.out.println("Connection error!");
-            return null;
-        } catch (ConnectionDenied e) {
-            System.out.println("Connection refused!");
-            return null;
+        catch (Exception t){
+            return new Contact(inname, inaddress);
         }
 
         Contact contact = new Contact(inname, inaddress, connection);
@@ -101,5 +95,13 @@ public class Contact {
 
     public void receive(String s){
         System.out.println(s);
+    }
+
+    public String getName(){
+        return name;
+    }
+
+    public String getAddress(){
+        return address.getHostAddress();
     }
 }
