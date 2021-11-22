@@ -1,9 +1,12 @@
-import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
+
+import org.w3c.dom.*;
+import javax.xml.parsers.*;
+import java.io.*;
 
 public class Contact {
     private String name;
@@ -94,7 +97,28 @@ public class Contact {
     }
 
     public void receive(String s){
-        System.out.println(s);
+        File messages = new File("messages");
+        File messagefile = new File(messages,name.toLowerCase() + ".messages");
+
+        StringBuilder xmlStringBuilder = new StringBuilder();
+
+        if (!messagefile.exists()){
+            try {
+                messagefile.createNewFile();
+                xmlStringBuilder.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        xmlStringBuilder.append("<message time = \"\" direction = \"0\">" + s + "</message>\n");
+        try {
+            PrintWriter pw = new PrintWriter(new FileWriter(messagefile, true));
+            pw.println(xmlStringBuilder.toString());
+            pw.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        //Hozza kell adni az uzenetet majd a memoriaban levo tarolohoz is
     }
 
     public String getName(){

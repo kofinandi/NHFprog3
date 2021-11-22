@@ -27,27 +27,35 @@ public class Server extends Thread{
             try {
                 Connection tmp = new Connection(server.accept());
                 String address = tmp.getAddress().getHostAddress();
+                boolean found = false;
 
                 contact : for (Contact c : contacts){
                     if (c.getAddress().equals(address)){
+                        System.out.println("Egyezik");
                         c.connect(tmp);
                         tmp.init(c);
                         tmp.send("1");
                         Main.addConnection(tmp);
+                        found = true;
                         break contact;
                     }
                 }
 
-                if (true){ //Szeretnenk-e hozzaadni?
-                    Contact c = new Contact("Megadott nev", tmp.getAddress(), tmp);
-                    contacts.add(c);
-                    tmp.init(c);
-                    tmp.send("1");
-                    Main.addConnection(tmp);
-                }
-                else {
-                    tmp.send("0");
-                    tmp.close();
+                if (!found){
+                    //Megy egy prompt hogy akarjuk-e a csatlakozast
+                    if (true){ //Szeretnenk-e hozzaadni?
+                        Contact c = new Contact("Megadott nev", tmp.getAddress(), tmp);
+                        contacts.add(c);
+                        tmp.init(c);
+                        tmp.send("1");
+                        Main.addConnection(tmp);
+                    }
+                    else {
+                        Contact c = new Contact(null, null, null);
+                        tmp.init(c);
+                        tmp.send("0");
+                        tmp.close();
+                    }
                 }
 
             } catch (IOException e) {

@@ -20,34 +20,34 @@ public class Main {
             BufferedReader fr = new BufferedReader(new FileReader(contactfile));
             StringBuilder jsonstring = new StringBuilder();
             while (true){
-                String s = fr.readLine();
-                if (s == null){
+                String st = fr.readLine();
+                if (st == null){
                     break;
                 }
-                jsonstring.append(s);
+                jsonstring.append(st);
             }
             JSONObject js = new JSONObject(jsonstring.toString());
             JSONArray ja = js.getJSONArray("contacts");
 
             for (int i = 0; i < ja.length(); i++){
                 contacts.add(Contact.loadContact(ja.getJSONObject(i).getString("name"), ja.getJSONObject(i).getString("address")));
-                System.out.println(ja.getJSONObject(i).getString("name") + " " + ja.getJSONObject(i).getString("address"));
+                //System.out.println(ja.getJSONObject(i).getString("name") + " " + ja.getJSONObject(i).getString("address"));
             }
         }
 
         Thread s = new Server(contacts);
         s.start();
 
-//        contacts.add(Contact.createContact("Teszt", "192.168.1.243"));
-//        if (contacts.get(0) != null){
-//            contacts.get(0).send("Haho");
-//        }
+        contacts.add(Contact.createContact("Teszt", "192.168.1.243"));
+        if (contacts.get(0) != null){
+            contacts.get(0).send("Haho");
+        }
 
         JSONObject ojs = new JSONObject();
         JSONArray ocontacts = new JSONArray();
 
         for (Contact c : contacts){
-            System.out.println(c.getName() + " " + c.getAddress());
+            //System.out.println(c.getName() + " " + c.getAddress());
             JSONObject contact = new JSONObject();
             contact.put("name", c.getName());
             contact.put("address", c.getAddress());
