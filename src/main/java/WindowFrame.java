@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class WindowFrame extends JFrame {
@@ -96,7 +97,12 @@ public class WindowFrame extends JFrame {
 
         @Override
         public void windowClosing(WindowEvent e) {
-            System.out.println("Closing");
+            System.out.println("Quiting");
+            try {
+                ContactHandler.quit();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
             System.exit(0);
         }
 

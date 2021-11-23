@@ -12,30 +12,9 @@ public class Main {
     private static ArrayList<Connection> connections = new ArrayList<Connection>();
 
     public static void main(String[] args) throws IOException { //Exceptiont kezelni kell
-        File contactfile = new File("contacts.json");
         ArrayList<Contact> contacts = new ArrayList<>();
 
-        if (!contactfile.exists()){
-            contactfile.createNewFile();
-        }
-        else {
-            BufferedReader fr = new BufferedReader(new FileReader(contactfile));
-            StringBuilder jsonstring = new StringBuilder();
-            while (true){
-                String st = fr.readLine();
-                if (st == null){
-                    break;
-                }
-                jsonstring.append(st);
-            }
-            JSONObject js = new JSONObject(jsonstring.toString());
-            JSONArray ja = js.getJSONArray("contacts");
-
-            for (int i = 0; i < ja.length(); i++){
-                contacts.add(Contact.loadContact(ja.getJSONObject(i).getString("name"), ja.getJSONObject(i).getString("address")));
-                //System.out.println(ja.getJSONObject(i).getString("name") + " " + ja.getJSONObject(i).getString("address"));
-            }
-        }
+        ContactHandler.setup(contacts);
 
         Thread s = new Server(contacts);
         s.start();
@@ -47,21 +26,6 @@ public class Main {
 //        if (contacts.get(0) != null){
 //            contacts.get(0).send("Haho");
 //        }
-
-        JSONObject ojs = new JSONObject();
-        JSONArray ocontacts = new JSONArray();
-
-        for (Contact c : contacts){
-            //System.out.println(c.getName() + " " + c.getAddress());
-            JSONObject contact = new JSONObject();
-            contact.put("name", c.getName());
-            contact.put("address", c.getAddress());
-            ocontacts.put(contact);
-        }
-        ojs.put("contacts", ocontacts);
-        PrintWriter pw = new PrintWriter(new FileWriter(contactfile));
-        pw.println(ojs.toString());
-        pw.flush();
     }
 
     public static void addConnection(Connection c){
