@@ -30,7 +30,6 @@ public class ContactHandler {
 
             for (int i = 0; i < ja.length(); i++){
                 contacts.add(Contact.loadContact(ja.getJSONObject(i).getString("name"), ja.getJSONObject(i).getString("address")));
-                //System.out.println(ja.getJSONObject(i).getString("name") + " " + ja.getJSONObject(i).getString("address"));
             }
         }
     }
