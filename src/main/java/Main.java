@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import javax.swing.*;
+
 public class Main {
     private static ArrayList<Connection> connections = new ArrayList<Connection>();
 
@@ -38,10 +40,13 @@ public class Main {
         Thread s = new Server(contacts);
         s.start();
 
-        contacts.add(Contact.createContact("Teszt", "192.168.1.243"));
-        if (contacts.get(0) != null){
-            contacts.get(0).send("Haho");
-        }
+        JFrame window = new WindowFrame(contacts);
+        window.setVisible(true);
+
+//        contacts.add(Contact.createContact("Teszt", "192.168.1.243"));
+//        if (contacts.get(0) != null){
+//            contacts.get(0).send("Haho");
+//        }
 
         JSONObject ojs = new JSONObject();
         JSONArray ocontacts = new JSONArray();
