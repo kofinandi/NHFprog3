@@ -121,6 +121,12 @@ public class WindowFrame extends JFrame {
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
 
+    public void notifyMessage(Contact c){
+        if (list.getSelectedValue() == c){
+            ((MessagePanel)messages.getComponent(0)).newMessage();
+        }
+    }
+
     class CloseListener implements WindowListener{
         @Override
         public void windowOpened(WindowEvent e) {

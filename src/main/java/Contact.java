@@ -6,6 +6,8 @@ import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 
 import org.w3c.dom.*;
+import org.xml.sax.InputSource;
+
 import javax.xml.parsers.*;
 import java.io.*;
 import java.time.LocalDate;
@@ -75,6 +77,7 @@ public class Contact {
         } catch (IOException e) {
             System.out.println("IO exception!");
         }
+
         return contact;
     }
 
@@ -82,11 +85,52 @@ public class Contact {
         name = n;
         address = a;
         connection = c;
+        loadHistory();
     }
 
     public Contact(String n, InetAddress a){
         name = n;
         address = a;
+        loadHistory();
+    }
+
+    private void loadHistory(){
+        File messagesfolder = new File("messages");
+        File messagefile = new File(messagesfolder,name.toLowerCase() + ".messages");
+
+        if (messagefile.exists()){
+            StringBuilder sb = new StringBuilder();
+
+            FileReader fr = null;
+            try {
+                fr = new FileReader(messagefile);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+
+            int data;
+            while (true) {
+                try {
+                    if (!((data = fr.read()) != -1)) break;
+                    sb.append((char) data);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            sb.append("</root>");
+            String xml = sb.toString();
+
+            MessageParser p = new MessageParser(messages);
+            SAXParserFactory factory = SAXParserFactory.newInstance();
+            try {
+                SAXParser sp = factory.newSAXParser();
+                InputSource is = new InputSource(new StringReader(xml));
+                sp.parse(is, p);
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void connect(Connection c){
@@ -95,6 +139,10 @@ public class Contact {
 
     public void disconnect(){
         connection = null;
+    }
+
+    public LinkedList<Message> getMessages(){
+        return messages;
     }
 
     public void send(Message m){
@@ -111,7 +159,7 @@ public class Contact {
                 e.printStackTrace();
             }
         }
-        xmlStringBuilder.append("<message date = \"" + m.date + "\" time = \"" + m.time + "\" received = \"" + 0 + "\" file = \"" + m.file + "\">" + m.text + "</message>\n");
+        xmlStringBuilder.append("<message date = \"" + m.date + "\" time = \"" + m.time + "\" received = \"" + 0 + "\" file = \"" + m.file + "\">" + m.text + "</message>");
         try {
             PrintWriter pw = new PrintWriter(new FileWriter(messagefile, true));
             pw.println(xmlStringBuilder.toString());
@@ -121,7 +169,7 @@ public class Contact {
         }
         messages.addLast(m);
         connection.send(m);
-        //Ertesiteni kell a grafikat is majd
+        Main.notifyMessage(this);
     }
 
     public void receive(Message m){
@@ -138,7 +186,7 @@ public class Contact {
                 e.printStackTrace();
             }
         }
-        xmlStringBuilder.append("<message date = \"" + m.date + "\" time = \"" + m.time + "\" received = \"" + 1 + "\" file = \"" + m.file + "\">" + m.text + "</message>\n");
+        xmlStringBuilder.append("<message date = \"" + m.date + "\" time = \"" + m.time + "\" received = \"" + 1 + "\" file = \"" + m.file + "\">" + m.text + "</message>");
         try {
             PrintWriter pw = new PrintWriter(new FileWriter(messagefile, true));
             pw.println(xmlStringBuilder.toString());
@@ -147,7 +195,7 @@ public class Contact {
             e.printStackTrace();
         }
         messages.addLast(m);
-        //Ertesiteni kell a grafikat is majd
+        Main.notifyMessage(this);
     }
 
     public String getName(){

@@ -10,6 +10,7 @@ import javax.swing.*;
 
 public class Main {
     private static ArrayList<Connection> connections = new ArrayList<Connection>();
+    private static WindowFrame window;
 
     public static void main(String[] args) throws IOException { //Exceptiont kezelni kell
         ArrayList<Contact> contacts = new ArrayList<>();
@@ -19,13 +20,12 @@ public class Main {
         Thread s = new Server(contacts);
         s.start();
 
-        JFrame window = new WindowFrame(contacts);
+        window = new WindowFrame(contacts);
         window.setVisible(true);
+    }
 
-//        contacts.add(Contact.createContact("Teszt", "192.168.1.243"));
-//        if (contacts.get(0) != null){
-//            contacts.get(0).send("Haho");
-//        }
+    public static void notifyMessage(Contact c){
+        window.notifyMessage(c);
     }
 
     public static void addConnection(Connection c){

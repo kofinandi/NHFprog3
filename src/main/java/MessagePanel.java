@@ -11,6 +11,9 @@ public class MessagePanel extends JPanel {
     private JPanel messages = new JPanel();
     private JPanel sender = new JPanel();
 
+    private DefaultListModel<Message> listModel;
+    private JList list;
+
     private JButton file = new JButton("Send file");
     private JTextField text = new JTextField(20);
     private JButton send = new JButton("Send!");
@@ -25,10 +28,36 @@ public class MessagePanel extends JPanel {
         sender.add(text);
         sender.add(send);
 
+        messages.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+
+       listModel = new DefaultListModel<>();
+        for (Message m : contact.getMessages()){
+            listModel.addElement(m);
+        }
+        list = new JList<>(listModel);
+        list.setBounds(100,100, 75,75);
+        JScrollPane scroll = new JScrollPane();
+        scroll.setViewportView(list);
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.weightx = 1;
+        gbc.weighty = 1;
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        messages.add(scroll, gbc);
+
+        list.setCellRenderer(new MessageRenderer());
+
+
         this.setLayout(new BorderLayout());
         this.add(name, BorderLayout.NORTH);
         this.add(messages, BorderLayout.CENTER);
         this.add(sender, BorderLayout.SOUTH);
+    }
+
+    public void newMessage(){
+        listModel.addElement(contact.getMessages().getLast());
+        list.updateUI();
     }
 
     public class sendButtonListener implements ActionListener {
