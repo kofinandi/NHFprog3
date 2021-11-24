@@ -3,12 +3,13 @@ import org.json.JSONObject;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class ContactHandler {
-    private static ArrayList<Contact> contacts;
+    private static LinkedList<Contact> contacts;
     private static File contactfile;
 
-    public static void setup(ArrayList<Contact> c) throws IOException {
+    public static void setup(LinkedList<Contact> c) throws IOException {
         contacts = c;
         contactfile = new File("contacts.json");
 
@@ -32,6 +33,11 @@ public class ContactHandler {
                 contacts.add(Contact.loadContact(ja.getJSONObject(i).getString("name"), ja.getJSONObject(i).getString("address")));
             }
         }
+    }
+
+    public static void addContact(Contact c){
+        contacts.addFirst(c);
+        Main.notifyContact();
     }
 
     public static void quit() throws IOException {

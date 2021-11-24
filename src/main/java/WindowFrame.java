@@ -2,10 +2,13 @@ import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class WindowFrame extends JFrame {
     private JPanel menu = new JPanel();
@@ -15,11 +18,14 @@ public class WindowFrame extends JFrame {
     private JButton refresh = new JButton("Refresh");
     private JButton add = new JButton("Add contact");
 
+    LinkedList<Contact> contacts;
+    DefaultListModel<Contact> listModel;
     JList<Contact> list;
 
-    private ArrayList<JPanel> contactpanels = new ArrayList<>();
+    private LinkedList<JPanel> contactpanels = new LinkedList<>();
 
-    public WindowFrame(ArrayList<Contact> contacts){
+    public WindowFrame(LinkedList<Contact> cin){
+        contacts = cin;
         this.setTitle("Peer to peer messenger");
         this.setSize(1200, 900);
         this.setResizable(true);
@@ -29,11 +35,11 @@ public class WindowFrame extends JFrame {
 
         contactspane.setLayout(new GridLayout());
 
-        DefaultListModel<Contact> l1 = new DefaultListModel<>();
+        listModel = new DefaultListModel<>();
         for (Contact c : contacts){
-            l1.addElement(c);
+            listModel.addElement(c);
         }
-        list = new JList<>(l1);
+        list = new JList<>(listModel);
         list.setBounds(100,100, 75,75);
         list.setFixedCellHeight(60);
         list.addListSelectionListener(new ContactSelectionListener());
@@ -44,38 +50,9 @@ public class WindowFrame extends JFrame {
         list.setCellRenderer(new CustomListRenderer());
         contactspane.setBackground(new Color(121, 211, 107));
 
-        /*
-        contactspane.setLayout(new GridBagLayout());
-        constraints.fill = GridBagConstraints.BOTH;
-        constraints.weightx = 1;
-        constraints.weighty = 1;
-        constraints.anchor = GridBagConstraints.PAGE_START;
-        for (Contact c : contacts){
-            JPanel contact = new JPanel(new GridBagLayout());
-            constraints.gridx = 0;
-            constraints.gridy = 0;
-            contact.add(new JLabel(c.getName()), constraints);
-            constraints.gridx = 0;
-            constraints.gridy = 1;
-            contact.add(new JLabel(c.getAddress()), constraints);
-            contactpanels.add(contact);
-        }
-
-
-        constraints.weightx = 1;
-        constraints.weighty = 0;
-        constraints.gridx = 0;
-        constraints.gridy = 0;
-
-        int i = 0;
-        for (JPanel jp : contactpanels){
-            constraints.gridy = i++;
-            contactspane.add(jp, constraints);
-        }
-         */
-
         menu.setLayout(new BorderLayout());
         menu.setBackground(new Color(79, 79, 219));
+        add.addActionListener(new AddContactListener());
         menu.add(refresh, BorderLayout.WEST);
         menu.add(add, BorderLayout.EAST);
 
@@ -125,6 +102,11 @@ public class WindowFrame extends JFrame {
         if (list.getSelectedValue() == c){
             ((MessagePanel)messages.getComponent(0)).newMessage();
         }
+    }
+
+    public void notifyContact(){
+        listModel.addElement(contacts.getFirst());
+        list.updateUI();
     }
 
     class CloseListener implements WindowListener{
@@ -182,6 +164,23 @@ public class WindowFrame extends JFrame {
             constraints.fill = GridBagConstraints.BOTH;
             messages.add(new MessagePanel(list.getSelectedValue()), constraints);
             messages.updateUI();
+        }
+    }
+
+    public class AddContactListener implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            AddContactPopup addcontact = new AddContactPopup();
+            if (JOptionPane.showConfirmDialog(null, addcontact, "Add contact", JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION){
+                System.out.println(((JTextField)addcontact.getComponent(1)).getText() + " " + ((JTextField)addcontact.getComponent(3)).getText());
+                Contact newcontact = Contact.createContact(((JTextField)addcontact.getComponent(1)).getText(), ((JTextField)addcontact.getComponent(3)).getText());
+                if (newcontact != null){
+                    ContactHandler.addContact(newcontact);
+                }
+                else {
+                    JOptionPane.showMessageDialog(null,"Cannot add contact!","Error",JOptionPane.ERROR_MESSAGE);
+                }
+            }
         }
     }
 }

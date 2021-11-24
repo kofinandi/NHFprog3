@@ -1,17 +1,13 @@
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.net.InetAddress;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 
-import org.w3c.dom.*;
 import org.xml.sax.InputSource;
 
 import javax.xml.parsers.*;
 import java.io.*;
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class Contact {

@@ -5,12 +5,13 @@ import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class Server extends Thread{
     private ServerSocket server;
-    private ArrayList<Contact> contacts;
+    private LinkedList<Contact> contacts;
 
-    public Server(ArrayList<Contact> c){
+    public Server(LinkedList<Contact> c){
         contacts = c;
     }
 

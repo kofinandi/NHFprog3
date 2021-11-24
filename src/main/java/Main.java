@@ -1,19 +1,13 @@
 import java.io.*;
-import java.net.InetAddress;
-import java.net.SocketTimeoutException;
 import java.util.ArrayList;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import javax.swing.*;
+import java.util.LinkedList;
 
 public class Main {
     private static ArrayList<Connection> connections = new ArrayList<Connection>();
     private static WindowFrame window;
 
     public static void main(String[] args) throws IOException { //Exceptiont kezelni kell
-        ArrayList<Contact> contacts = new ArrayList<>();
+        LinkedList<Contact> contacts = new LinkedList<>();
 
         ContactHandler.setup(contacts);
 
@@ -26,6 +20,9 @@ public class Main {
 
     public static void notifyMessage(Contact c){
         window.notifyMessage(c);
+    }
+    public static void notifyContact(){
+
     }
 
     public static void addConnection(Connection c){
