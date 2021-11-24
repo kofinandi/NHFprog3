@@ -3,6 +3,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 public class MessageListener extends Thread{
     private Socket socket;
@@ -41,7 +44,9 @@ public class MessageListener extends Thread{
                 return;
             }
 
-            contact.receive(ins);
+            String[] arr = ins.split(" ", 4);
+            System.out.println(LocalDate.parse(arr[0]) + " " + LocalTime.parse(arr[1]) + " " + arr[3]);
+            contact.receive(new Message(LocalDate.parse(arr[0]), LocalTime.parse(arr[1]), true, false, arr[3]));
         }
     }
 }

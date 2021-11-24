@@ -34,7 +34,7 @@ public class Server extends Thread{
                         System.out.println("Egyezik");
                         c.connect(tmp);
                         tmp.init(c);
-                        tmp.send("1");
+                        tmp.sendresponse("1");
                         Main.addConnection(tmp);
                         found = true;
                         break contact;
@@ -47,13 +47,13 @@ public class Server extends Thread{
                         Contact c = new Contact("Megadott nev", tmp.getAddress(), tmp);
                         contacts.add(c);
                         tmp.init(c);
-                        tmp.send("1");
+                        tmp.sendresponse("1");
                         Main.addConnection(tmp);
                     }
                     else {
                         Contact c = new Contact(null, null, null);
                         tmp.init(c);
-                        tmp.send("0");
+                        tmp.sendresponse("0");
                         tmp.close();
                     }
                 }

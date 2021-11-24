@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.net.InetAddress;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
@@ -7,11 +8,15 @@ import java.net.UnknownHostException;
 import org.w3c.dom.*;
 import javax.xml.parsers.*;
 import java.io.*;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class Contact {
     private String name;
     private InetAddress address;
     private Connection connection = null;
+    private LinkedList<Message> messages = new LinkedList<>();
 
     static Contact createContact(String inname, String inip){
         InetAddress inaddress;
@@ -92,13 +97,9 @@ public class Contact {
         connection = null;
     }
 
-    public void send(String s){
-        connection.send(s);
-    }
-
-    public void receive(String s){
-        File messages = new File("messages");
-        File messagefile = new File(messages,name.toLowerCase() + ".messages");
+    public void send(Message m){
+        File messagesfolder = new File("messages");
+        File messagefile = new File(messagesfolder,name.toLowerCase() + ".messages");
 
         StringBuilder xmlStringBuilder = new StringBuilder();
 
@@ -110,7 +111,7 @@ public class Contact {
                 e.printStackTrace();
             }
         }
-        xmlStringBuilder.append("<message time = \"\" direction = \"0\">" + s + "</message>\n");
+        xmlStringBuilder.append("<message date = \"" + m.date + "\" time = \"" + m.time + "\" received = \"" + 0 + "\" file = \"" + m.file + "\">" + m.text + "</message>\n");
         try {
             PrintWriter pw = new PrintWriter(new FileWriter(messagefile, true));
             pw.println(xmlStringBuilder.toString());
@@ -118,7 +119,35 @@ public class Contact {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        //Hozza kell adni az uzenetet majd a memoriaban levo tarolohoz is
+        messages.addLast(m);
+        connection.send(m);
+        //Ertesiteni kell a grafikat is majd
+    }
+
+    public void receive(Message m){
+        File messagesfolder = new File("messages");
+        File messagefile = new File(messagesfolder,name.toLowerCase() + ".messages");
+
+        StringBuilder xmlStringBuilder = new StringBuilder();
+
+        if (!messagefile.exists()){
+            try {
+                messagefile.createNewFile();
+                xmlStringBuilder.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        xmlStringBuilder.append("<message date = \"" + m.date + "\" time = \"" + m.time + "\" received = \"" + 1 + "\" file = \"" + m.file + "\">" + m.text + "</message>\n");
+        try {
+            PrintWriter pw = new PrintWriter(new FileWriter(messagefile, true));
+            pw.println(xmlStringBuilder.toString());
+            pw.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        messages.addLast(m);
+        //Ertesiteni kell a grafikat is majd
     }
 
     public String getName(){

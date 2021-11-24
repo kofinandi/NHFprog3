@@ -36,7 +36,12 @@ public class Connection {
         Main.removeConnection(this);
     }
 
-    public void send(String s){
+    public void send(Message m){
+        out.println(m.date + " " + m.time + " " + 0 + " " + m.text);
+        out.flush();
+    }
+
+    public void sendresponse(String s){
         out.println(s);
         out.flush();
     }
