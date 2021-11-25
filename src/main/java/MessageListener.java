@@ -45,7 +45,6 @@ public class MessageListener extends Thread{
             }
 
             String[] arr = ins.split(" ", 4);
-            System.out.println(LocalDate.parse(arr[0]) + " " + LocalTime.parse(arr[1]) + " " + arr[3]);
             contact.receive(new Message(LocalDate.parse(arr[0]), LocalTime.parse(arr[1]), true, false, arr[3]));
         }
     }

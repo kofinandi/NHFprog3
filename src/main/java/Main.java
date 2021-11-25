@@ -21,8 +21,13 @@ public class Main {
     public static void notifyMessage(Contact c){
         window.notifyMessage(c);
     }
-    public static void notifyContact(){
 
+    public static void notifyContact(){
+        window.notifyContact();
+    }
+
+    public static boolean requestContact(String address){
+        return window.requestContact(address);
     }
 
     public static void addConnection(Connection c){

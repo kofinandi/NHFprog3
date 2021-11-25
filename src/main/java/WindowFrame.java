@@ -106,7 +106,11 @@ public class WindowFrame extends JFrame {
 
     public void notifyContact(){
         listModel.addElement(contacts.getFirst());
-        list.updateUI();
+    }
+
+    public boolean requestContact(String address){
+        //Kell rendes kerdes addressel
+        return JOptionPane.showConfirmDialog(null, "Would you like to add contact?", address, JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
     }
 
     class CloseListener implements WindowListener{

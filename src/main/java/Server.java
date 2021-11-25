@@ -43,12 +43,12 @@ public class Server extends Thread{
                 }
 
                 if (!found){
-                    //Megy egy prompt hogy akarjuk-e a csatlakozast
-                    if (true){ //Szeretnenk-e hozzaadni?
+                    if (Main.requestContact(tmp.getAddress().getHostAddress())){ //Szeretnenk-e hozzaadni?
                         Contact c = new Contact("Megadott nev", tmp.getAddress(), tmp);
                         contacts.add(c);
                         tmp.init(c);
                         tmp.sendresponse("1");
+                        Main.notifyContact();
                         Main.addConnection(tmp);
                     }
                     else {

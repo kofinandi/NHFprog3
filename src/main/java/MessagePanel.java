@@ -57,7 +57,6 @@ public class MessagePanel extends JPanel {
 
     public void newMessage(){
         listModel.addElement(contact.getMessages().getLast());
-        list.updateUI();
     }
 
     public class sendButtonListener implements ActionListener {
