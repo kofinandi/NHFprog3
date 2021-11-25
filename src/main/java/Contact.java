@@ -8,7 +8,6 @@ import org.xml.sax.InputSource;
 
 import javax.xml.parsers.*;
 import java.io.*;
-import java.security.MessageDigest;
 import java.util.LinkedList;
 
 public class Contact {
@@ -97,7 +96,7 @@ public class Contact {
 
     private void loadHistory(){
         File messagesfolder = new File("messages");
-        File messagefile = new File(messagesfolder,name.toLowerCase() + ".messages");
+        File messagefile = new File(messagesfolder,address.getHostAddress() + ".messages");
 
         if (messagefile.exists()){
             StringBuilder sb = new StringBuilder();
@@ -152,6 +151,10 @@ public class Contact {
 
     public LinkedList<Message> getMessages(){
         return messages;
+    }
+
+    public Connection getConnection(){
+        return connection;
     }
 
     public void send(Message m){

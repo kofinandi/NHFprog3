@@ -191,16 +191,7 @@ public class WindowFrame extends JFrame {
     public class RefreshListener implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
-            try {
-                ContactHandler.quit();
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-            try {
-                ContactHandler.setup(contacts);
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
+            ContactHandler.reload();
         }
     }
 }

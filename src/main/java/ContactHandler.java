@@ -2,6 +2,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.*;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.LinkedList;
 
 public class ContactHandler {
@@ -67,5 +69,39 @@ public class ContactHandler {
         pw.flush();
 
         contacts.removeAll(contacts);
+    }
+
+    public static void reload(){
+        for (Contact c : contacts){
+            if (c.online()){
+                try {
+                    c.getConnection().close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            InetAddress address = null;
+            try {
+                address = InetAddress.getByName(c.getAddress());
+            } catch (UnknownHostException e) {
+                System.out.println("Cannot reconnect, wrong address!");
+            }
+
+            Connection connection;
+            try {
+                connection = new Connection(address);
+            }
+            catch (Exception t){
+                continue;
+            }
+
+            try {
+                connection.init(c);
+            } catch (IOException e) {
+                System.out.println("Cannot reconnect, cannot initialize connection!");
+            }
+            c.connect(connection);
+        }
     }
 }
