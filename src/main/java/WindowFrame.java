@@ -7,7 +7,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class WindowFrame extends JFrame {
@@ -52,8 +51,9 @@ public class WindowFrame extends JFrame {
 
         menu.setLayout(new BorderLayout());
         menu.setBackground(new Color(79, 79, 219));
-        add.addActionListener(new AddContactListener());
+        refresh.addActionListener(new RefreshListener());
         menu.add(refresh, BorderLayout.WEST);
+        add.addActionListener(new AddContactListener());
         menu.add(add, BorderLayout.EAST);
 
         messages.setLayout(new GridBagLayout());
@@ -184,6 +184,22 @@ public class WindowFrame extends JFrame {
                 else {
                     JOptionPane.showMessageDialog(null,"Cannot add contact!","Error",JOptionPane.ERROR_MESSAGE);
                 }
+            }
+        }
+    }
+
+    public class RefreshListener implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            try {
+                ContactHandler.quit();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+            try {
+                ContactHandler.setup(contacts);
+            } catch (IOException ex) {
+                ex.printStackTrace();
             }
         }
     }

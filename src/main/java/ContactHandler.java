@@ -2,7 +2,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.*;
-import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class ContactHandler {
@@ -58,5 +57,6 @@ public class ContactHandler {
         pw.println(ojs.toString());
         pw.flush();
 
+        contacts.removeAll(contacts);
     }
 }
