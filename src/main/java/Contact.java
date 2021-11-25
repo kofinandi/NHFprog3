@@ -81,13 +81,17 @@ public class Contact {
         name = n;
         address = a;
         connection = c;
-        loadHistory();
+        if (n != null){
+            loadHistory();
+        }
     }
 
     public Contact(String n, InetAddress a){
         name = n;
         address = a;
-        loadHistory();
+        if (n != null){
+            loadHistory();
+        }
     }
 
     private void loadHistory(){
@@ -137,6 +141,14 @@ public class Contact {
         connection = null;
     }
 
+    public void closeConnection(){
+        try {
+            connection.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public LinkedList<Message> getMessages(){
         return messages;
     }
@@ -150,7 +162,8 @@ public class Contact {
         if (!messagefile.exists()){
             try {
                 messagefile.createNewFile();
-                xmlStringBuilder.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+                xmlStringBuilder.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+                xmlStringBuilder.append("<root>\n");
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -178,6 +191,7 @@ public class Contact {
             try {
                 messagefile.createNewFile();
                 xmlStringBuilder.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+                xmlStringBuilder.append("<root>\n");
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -192,6 +206,10 @@ public class Contact {
         }
         messages.addLast(m);
         Main.notifyMessage(this);
+    }
+
+    public boolean online(){
+        return connection != null;
     }
 
     public String getName(){

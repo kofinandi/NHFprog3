@@ -49,6 +49,9 @@ public class ContactHandler {
             contact.put("name", c.getName());
             contact.put("address", c.getAddress());
             ocontacts.put(contact);
+            if (c.online()){
+                c.closeConnection();
+            }
         }
         ojs.put("contacts", ocontacts);
         PrintWriter pw = new PrintWriter(new FileWriter(contactfile));
