@@ -28,23 +28,17 @@ public class Server extends Thread{
             try {
                 Connection tmp = new Connection(server.accept());
                 String address = tmp.getAddress().getHostAddress();
-                boolean found = false;
 
-                contact : for (Contact c : contacts){
-                    if (c.getAddress().equals(address)){
-                        System.out.println("Egyezik");
-                        c.connect(tmp);
-                        tmp.init(c);
-                        tmp.sendresponse("1");
-                        Main.addConnection(tmp);
-                        found = true;
-                        break contact;
-                    }
+                Contact c = ContactHandler.haveContact(address);
+                if (c != null){
+                    c.connect(tmp);
+                    tmp.init(c);
+                    tmp.sendresponse("1");
+                    Main.addConnection(tmp);
                 }
-
-                if (!found){
-                    if (Main.requestContact(tmp.getAddress().getHostAddress())){ //Szeretnenk-e hozzaadni?
-                        Contact c = new Contact("Megadott nev", tmp.getAddress(), tmp);
+                else {
+                    if (Main.requestContact(address)){ //Szeretnenk-e hozzaadni?
+                        c = new Contact("Megadott nev", tmp.getAddress(), tmp);
                         contacts.add(c);
                         tmp.init(c);
                         tmp.sendresponse("1");
@@ -52,7 +46,7 @@ public class Server extends Thread{
                         Main.addConnection(tmp);
                     }
                     else {
-                        Contact c = new Contact(null, null, null);
+                        c = new Contact(null, null, null);
                         tmp.init(c);
                         tmp.sendresponse("0");
                         tmp.close();

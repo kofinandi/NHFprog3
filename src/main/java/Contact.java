@@ -8,6 +8,7 @@ import org.xml.sax.InputSource;
 
 import javax.xml.parsers.*;
 import java.io.*;
+import java.security.MessageDigest;
 import java.util.LinkedList;
 
 public class Contact {
@@ -155,7 +156,7 @@ public class Contact {
 
     public void send(Message m){
         File messagesfolder = new File("messages");
-        File messagefile = new File(messagesfolder,name.toLowerCase() + ".messages");
+        File messagefile = new File(messagesfolder,address + ".messages");
 
         StringBuilder xmlStringBuilder = new StringBuilder();
 

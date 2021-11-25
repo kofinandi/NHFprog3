@@ -39,6 +39,15 @@ public class ContactHandler {
         Main.notifyContact();
     }
 
+    public static Contact haveContact(String a){
+        for (Contact i : contacts){
+            if (i.getAddress().equals(a)){
+                return i;
+            }
+        }
+        return null;
+    }
+
     public static void quit() throws IOException {
         JSONObject ojs = new JSONObject();
         JSONArray ocontacts = new JSONArray();
