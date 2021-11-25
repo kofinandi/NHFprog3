@@ -37,7 +37,8 @@ public class Connection {
     }
 
     public void send(Message m){
-        out.println(m.date + " " + m.time + " " + 0 + " " + m.text);
+        out.println(m.date + " " + m.time + " " + (m.file ? 1 : 0) + " " + m.text);
+        System.out.println(m.date + " " + m.time + " " + (m.file ? 1 : 0) + " " + m.text);
         out.flush();
     }
 

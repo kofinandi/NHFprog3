@@ -8,6 +8,8 @@ import org.xml.sax.InputSource;
 
 import javax.xml.parsers.*;
 import java.io.*;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.LinkedList;
 
 public class Contact {
@@ -96,7 +98,7 @@ public class Contact {
 
     private void loadHistory(){
         File messagesfolder = new File("messages");
-        File messagefile = new File(messagesfolder,address.getHostAddress() + ".messages");
+        File messagefile = new File(messagesfolder,getAddress() + ".messages");
 
         if (messagefile.exists()){
             StringBuilder sb = new StringBuilder();
@@ -159,7 +161,7 @@ public class Contact {
 
     public void send(Message m){
         File messagesfolder = new File("messages");
-        File messagefile = new File(messagesfolder,address + ".messages");
+        File messagefile = new File(messagesfolder,getAddress() + ".messages");
 
         StringBuilder xmlStringBuilder = new StringBuilder();
 
@@ -172,7 +174,7 @@ public class Contact {
                 e.printStackTrace();
             }
         }
-        xmlStringBuilder.append("<message date = \"" + m.date + "\" time = \"" + m.time + "\" received = \"" + 0 + "\" file = \"" + m.file + "\">" + m.text + "</message>");
+        xmlStringBuilder.append("<message date = \"" + m.date + "\" time = \"" + m.time + "\" received = \"0\" file = \"0\">" + m.text + "</message>");
         try {
             PrintWriter pw = new PrintWriter(new FileWriter(messagefile, true));
             pw.println(xmlStringBuilder.toString());
@@ -187,7 +189,7 @@ public class Contact {
 
     public void receive(Message m){
         File messagesfolder = new File("messages");
-        File messagefile = new File(messagesfolder,name.toLowerCase() + ".messages");
+        File messagefile = new File(messagesfolder,getAddress() + ".messages");
 
         StringBuilder xmlStringBuilder = new StringBuilder();
 
@@ -222,5 +224,77 @@ public class Contact {
 
     public String getAddress(){
         return address.getHostAddress();
+    }
+
+    public void sendFile(File f){
+        File messagesfolder = new File("messages");
+        File messagefile = new File(messagesfolder,address + ".messages");
+
+        StringBuilder xmlStringBuilder = new StringBuilder();
+
+        if (!messagefile.exists()){
+            try {
+                messagefile.createNewFile();
+                xmlStringBuilder.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+                xmlStringBuilder.append("<root>\n");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        Message m = new Message(LocalDate.now(), LocalTime.now(), false, true, f.getAbsolutePath());
+        xmlStringBuilder.append("<message date = \"" + m.date + "\" time = \"" + m.time + "\" received = \"0\" file = \"1\">" + m.text + "</message>");
+        try {
+            PrintWriter pw = new PrintWriter(new FileWriter(messagefile, true));
+            pw.println(xmlStringBuilder.toString());
+            pw.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        messages.addLast(m);
+
+        try {
+            FileInputStream input = new FileInputStream(f);
+            byte[] read = new byte[1000];
+            connection.send(new Message(m.date, m.time, false, true, f.getName()));
+            while (input.read(read) > 0){
+                Message fm = new Message(m.date, m.time, false, true, new String(read));
+                connection.send(fm);
+            }
+            connection.send(new Message(m.date, m.time, false, false, f.getName()));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Main.notifyMessage(this);
+    }
+
+    public void receiveFile(String date, String time, String filename){
+        File messagesfolder = new File("messages");
+        File messagefile = new File(messagesfolder,name.toLowerCase() + ".messages");
+
+        StringBuilder xmlStringBuilder = new StringBuilder();
+
+        if (!messagefile.exists()){
+            try {
+                messagefile.createNewFile();
+                xmlStringBuilder.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+                xmlStringBuilder.append("<root>\n");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        Message m = new Message(LocalDate.parse(date), LocalTime.parse(time), true, true, filename);
+        xmlStringBuilder.append("<message date = \"" + m.date + "\" time = \"" + m.time + "\" received = \"1\" file = \"1\">" + m.text + "</message>");
+        try {
+            PrintWriter pw = new PrintWriter(new FileWriter(messagefile, true));
+            pw.println(xmlStringBuilder.toString());
+            pw.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        messages.addLast(m);
+        Main.notifyMessage(this);
     }
 }

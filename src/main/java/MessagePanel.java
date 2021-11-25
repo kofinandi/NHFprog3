@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,6 +24,7 @@ public class MessagePanel extends JPanel {
         name.setText(contact.getName());
 
         send.addActionListener(new sendButtonListener());
+        file.addActionListener(new sendFileListener());
 
         sender.add(file);
         sender.add(text);
@@ -63,6 +65,17 @@ public class MessagePanel extends JPanel {
         @Override
         public void actionPerformed(ActionEvent e) {
             contact.send(new Message(LocalDate.now(), LocalTime.now(), false, false, text.getText()));
+        }
+    }
+
+    public class sendFileListener implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            JFileChooser j = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+            int r = j.showOpenDialog(null);
+            if (r == JFileChooser.APPROVE_OPTION){
+                contact.sendFile(j.getSelectedFile());
+            }
         }
     }
 }
