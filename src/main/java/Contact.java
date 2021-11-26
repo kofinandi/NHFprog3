@@ -254,13 +254,8 @@ public class Contact {
 
         try {
             FileInputStream input = new FileInputStream(f);
-            byte[] read = new byte[1000];
             connection.send(new Message(m.date, m.time, false, true, f.getName()));
-            while (input.read(read) > 0){
-                Message fm = new Message(m.date, m.time, false, true, null);
-                connection.sendfile(fm, read);
-            }
-            connection.send(new Message(m.date, m.time, false, false, f.getName()));
+            connection.sendfile(input);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
