@@ -1,7 +1,5 @@
 import java.io.*;
 import java.net.Socket;
-import java.nio.charset.StandardCharsets;
-import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -13,8 +11,8 @@ public class MessageListener extends Thread{
 
     private boolean file = false;
     private String filename;
-    private PrintWriter writer = null;
-    private FileOutputStream output;
+    private FileOutputStream stream;
+    private InputStream instream;
 
     public MessageListener(Socket s, Connection c1, Contact c2) throws IOException {
         socket = s;
@@ -25,10 +23,12 @@ public class MessageListener extends Thread{
 
     @Override
     public void run() {
-        String ins;
+        String ins = null;
         while (true){
             try {
-                ins = in.readLine();
+                if (!file){
+                    ins = in.readLine();
+                }
             } catch (IOException e) {
                 try {
                     connection.close();
@@ -56,7 +56,8 @@ public class MessageListener extends Thread{
                     File incoming = new File(filename);
                     try {
                         incoming.createNewFile();
-                        output = new FileOutputStream(incoming, true);
+                        stream = new FileOutputStream(incoming, true);
+                        instream = socket.getInputStream();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -66,16 +67,42 @@ public class MessageListener extends Thread{
                 }
             }
             else{
+                StringBuilder str = new StringBuilder();
+                int c;
+                try {
+                    while ((c = in.read()) != ' ') {
+                        str.append((char) c);
+                    }
+                    arr[0] = str.toString();
+
+                    str = new StringBuilder();
+                    while ((c = in.read()) != ' ') {
+                        str.append((char) c);
+                    }
+                    arr[1] = str.toString();
+
+                    arr[2] = String.valueOf((char) in.read());
+                    in.skip(1);
+                } catch (IOException e){
+                    System.out.println("Cannot download file!");
+                }
+
+                System.out.println(arr[0] + " " + arr[1] + " " + arr[2] + " ");
+
                 if (arr[2].equals("0")){
                     file = false;
-                    output = null;
+                    stream = null;
+                    instream = null;
                     contact.receiveFile(arr[0], arr[1], arr[3]);
                 }
                 else {
                     try {
-                        arr[3] = arr[3].replace("\0", "");
-                        output.write(arr[3].getBytes());
-                        output.flush();
+                        byte[] b = new byte[1000];
+                        System.out.println("hello");
+                        System.out.println("olvasott " + instream.read(b, 0, 1000));
+                        System.out.println(new String(b));
+                        stream.write(b);
+                        stream.flush();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

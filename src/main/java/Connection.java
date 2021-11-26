@@ -42,6 +42,20 @@ public class Connection {
         out.flush();
     }
 
+    public void sendfile(Message m, byte[] file){
+        out.print(m.date + " " + m.time + " 1 ");
+        System.out.print(m.date + " " + m.time + " 1 ");
+        out.flush();
+        try {
+            BufferedOutputStream stream = new BufferedOutputStream(s.getOutputStream());
+            stream.write(file);
+            System.out.println(new String(file));
+            stream.flush();
+        } catch (IOException e) {
+            System.out.println("Cannot send file!");
+        }
+    }
+
     public void sendresponse(String s){
         out.println(s);
         out.flush();
