@@ -54,6 +54,7 @@ public class MessageListener extends Thread{
                 try {
                     stream = new FileOutputStream(incoming);
                     IOUtils.copyLarge(in, stream);
+                    stream.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

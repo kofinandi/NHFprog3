@@ -50,6 +50,9 @@ public class Connection {
 
     public void sendfile(FileInputStream input) throws IOException {
         int res = IOUtils.copy(input, out);
+        out.flush();
+        input.close();
+        ContactHandler.reload();
     }
 
     public void sendresponse(String s){
