@@ -31,6 +31,8 @@ public class WindowFrame extends JFrame {
         this.setResizable(true);
         this.setLayout(new GridBagLayout());
         this.addWindowListener(new CloseListener());
+        Image icon = Toolkit.getDefaultToolkit().getImage("/Users/kofinandi/OneDrive - Budapesti Műszaki és Gazdaságtudományi Egyetem/3. félév/Prog3/NHF/src/design/pear.png");
+        this.setIconImage(icon);
         GridBagConstraints constraints = new GridBagConstraints();
 
         contactspane.setLayout(new GridLayout());
@@ -44,14 +46,15 @@ public class WindowFrame extends JFrame {
         list.setFixedCellHeight(60);
         list.addListSelectionListener(new ContactSelectionListener());
         JScrollPane scroll = new JScrollPane();
+        scroll.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+
         scroll.setViewportView(list);
         contactspane.add(scroll);
 
         list.setCellRenderer(new CustomListRenderer());
-        contactspane.setBackground(new Color(121, 211, 107));
 
         menu.setLayout(new BorderLayout());
-        menu.setBackground(new Color(79, 79, 219));
+        menu.setBackground(new Color(219, 227, 255, 255));
         refresh.addActionListener(new RefreshListener());
         menu.add(refresh, BorderLayout.WEST);
         add.addActionListener(new AddContactListener());
@@ -78,6 +81,7 @@ public class WindowFrame extends JFrame {
         constraints.gridx = 0;
         constraints.gridy = 0;
         constraints.gridwidth = 3;
+        menu.setBorder(BorderFactory.createLineBorder(new Color(150, 150, 150), 1));
         this.add(menu, constraints);
 
         constraints.fill = GridBagConstraints.BOTH;
@@ -86,6 +90,7 @@ public class WindowFrame extends JFrame {
         constraints.gridx = 0;
         constraints.gridy = 1;
         constraints.gridwidth = 1;
+        contactspane.setBorder(BorderFactory.createLineBorder(new Color(150, 150, 150), 1));
         this.add(contactspane, constraints);
 
         constraints.fill = GridBagConstraints.BOTH;
@@ -94,7 +99,11 @@ public class WindowFrame extends JFrame {
         constraints.gridx = 1;
         constraints.gridy = 1;
         constraints.gridwidth = 2;
+        messages.setBorder(BorderFactory.createLineBorder(new Color(150, 150, 150), 1));
         this.add(messages, constraints);
+
+        list.setSelectedIndex(0);
+        list.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
 
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
