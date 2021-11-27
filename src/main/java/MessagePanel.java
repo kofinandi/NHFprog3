@@ -107,6 +107,7 @@ public class MessagePanel extends JPanel {
 
     public void newMessage(){
         listModel.addElement(contact.getMessages().getLast());
+        list.ensureIndexIsVisible(listModel.indexOf(contact.getMessages().getLast()));
     }
 
     public class sendButtonListener implements ActionListener {

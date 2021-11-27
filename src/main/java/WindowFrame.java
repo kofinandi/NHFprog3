@@ -117,6 +117,7 @@ public class WindowFrame extends JFrame {
     public void notifyMessage(Contact c){
         if (list.getSelectedValue() == c){
             ((MessagePanel)messages.getComponent(0)).newMessage();
+            c.read();
         }
         list.updateUI();
     }
@@ -153,7 +154,10 @@ public class WindowFrame extends JFrame {
     class CloseListener implements WindowListener{
         @Override
         public void windowOpened(WindowEvent e) {
-            list.setSelectedIndex(0);
+            try {
+                list.setSelectedIndex(0);
+            } catch (NullPointerException ex){
+            }
         }
 
         @Override
@@ -206,6 +210,7 @@ public class WindowFrame extends JFrame {
             messages.add(new MessagePanel(list.getSelectedValue()), constraints);
             list.getSelectedValue().read();
             messages.updateUI();
+            list.updateUI();
         }
     }
 
