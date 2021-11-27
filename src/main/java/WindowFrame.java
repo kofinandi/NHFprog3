@@ -9,6 +9,8 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.LinkedList;
 
 public class WindowFrame extends JFrame {
@@ -60,7 +62,12 @@ public class WindowFrame extends JFrame {
         JPanel container = new JPanel();
         container.setLayout(new BorderLayout());
         container.setBackground(menu.getBackground());
-        ipaddress.setText("Local IP: " + IPaddress.localAddress());
+        InetAddress addr = null;
+        try {
+            addr = InetAddress.getLocalHost();
+        } catch (UnknownHostException ex) {
+        }
+        ipaddress.setText("Local IP: " + addr.getHostAddress());
         ipaddress.setForeground(new Color(87, 87, 87));
         container.add(ipaddress, BorderLayout.WEST);
         add.addActionListener(new AddContactListener());
@@ -236,7 +243,12 @@ public class WindowFrame extends JFrame {
     public class RefreshListener implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
-            ipaddress.setText("Local IP: " + IPaddress.localAddress());
+            InetAddress addr = null;
+            try {
+                addr = InetAddress.getLocalHost();
+            } catch (UnknownHostException ex) {
+            }
+            ipaddress.setText("Local IP: " + addr.getHostAddress());
             ContactHandler.reload();
         }
     }

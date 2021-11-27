@@ -32,14 +32,7 @@ public class Contact {
         try {
             connection = new Connection(inaddress);
         }
-        catch (SocketTimeoutException t){
-            System.out.println("Cannot connect to contact!");
-            return null;
-        } catch (IOException e) {
-            System.out.println("Connection error!");
-            return null;
-        } catch (ConnectionDenied e) {
-            System.out.println("Connection refused!");
+        catch (Exception e){
             return null;
         }
 
