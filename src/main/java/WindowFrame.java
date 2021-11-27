@@ -209,12 +209,14 @@ public class WindowFrame extends JFrame {
             ImageIcon icon = new ImageIcon(new File("").getAbsolutePath() + "/src/design/addcontact.png");
             if (JOptionPane.showConfirmDialog(null, addcontact, "Add contact", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, icon) == JOptionPane.OK_OPTION){
                 System.out.println(((JTextField)addcontact.getComponent(1)).getText() + " " + ((JTextField)addcontact.getComponent(3)).getText());
-                Contact newcontact = Contact.createContact(((JTextField)addcontact.getComponent(1)).getText(), ((JTextField)addcontact.getComponent(3)).getText());
-                if (newcontact != null){
-                    ContactHandler.addContact(newcontact);
-                }
-                else {
-                    JOptionPane.showMessageDialog(null,"Cannot add contact!","Error",JOptionPane.ERROR_MESSAGE);
+                if (((JTextField)addcontact.getComponent(1)).getText() != null || ((JTextField)addcontact.getComponent(3)).getText() != null){
+                    Contact newcontact = Contact.createContact(((JTextField)addcontact.getComponent(1)).getText(), ((JTextField)addcontact.getComponent(3)).getText());
+                    if (newcontact != null){
+                        ContactHandler.addContact(newcontact);
+                    }
+                    else {
+                        JOptionPane.showMessageDialog(null,"Cannot add contact!","Error", JOptionPane.ERROR_MESSAGE);
+                    }
                 }
             }
         }
