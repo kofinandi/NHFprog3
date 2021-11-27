@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class Main {
-    private static ArrayList<Connection> connections = new ArrayList<Connection>();
     private static WindowFrame window;
 
     public static void main(String[] args) throws IOException { //Exceptiont kezelni kell
@@ -35,14 +34,4 @@ public class Main {
         window.notifyOnline(c);
     }
 
-    public static void addConnection(Connection c){
-        connections.add(c);
-        System.out.println("New connection");
-    }
-
-    public static void removeConnection(Connection c){
-        if (connections.remove(c)){
-            System.out.println("Connection closed");
-        }
-    }
 }

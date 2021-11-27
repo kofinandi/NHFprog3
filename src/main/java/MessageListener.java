@@ -60,7 +60,6 @@ public class MessageListener extends Thread{
                 }
             }
             else{
-                System.out.println(arr[0] + " " + arr[1] + " " + arr[2] + " " + arr[3]);
                 contact.receive(new Message(LocalDate.parse(arr[0]), LocalTime.parse(arr[1]), true, false, arr[3]));
             }
         }

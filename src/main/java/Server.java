@@ -29,7 +29,6 @@ public class Server extends Thread{
                     c.connect(tmp);
                     tmp.init(c);
                     tmp.sendresponse("1");
-                    Main.addConnection(tmp);
                 }
                 else {
                     String newname = Main.requestContact(address);
@@ -39,7 +38,6 @@ public class Server extends Thread{
                         tmp.init(c);
                         tmp.sendresponse("1");
                         Main.notifyContact();
-                        Main.addConnection(tmp);
                     }
                     else {
                         c = new Contact(null, null, null);

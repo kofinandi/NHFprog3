@@ -35,7 +35,6 @@ public class Connection {
         if (contact != null){
             contact.disconnect();
         }
-        Main.removeConnection(this);
     }
 
     public void send(Message m){
