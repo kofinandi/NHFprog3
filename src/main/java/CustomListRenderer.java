@@ -25,12 +25,12 @@ public class CustomListRenderer implements ListCellRenderer<Object> {
         panel.setFont(list.getFont());
         panel.setOpaque(true);
 
-        gbc.ipady = 10;
+        gbc.ipady = 5;
         gbc.anchor = GridBagConstraints.BASELINE_LEADING;
         gbc.gridx = 0;
-        gbc.gridy = 0;
-        panel.add(name, gbc);
         gbc.gridy = 1;
+        panel.add(name, gbc);
+        gbc.gridy = 2;
         panel.add(address, gbc);
 
         if (((Contact)value).unread() > 0){
@@ -38,9 +38,17 @@ public class CustomListRenderer implements ListCellRenderer<Object> {
             unread.setFont(new Font(Font.DIALOG, Font.BOLD, 13));
             unread.setForeground(new Color(194, 0, 0));
             gbc.gridx = 1;
-            gbc.gridy = 0;
+            gbc.gridy = 1;
             panel.add(unread, gbc);
         }
+
+        JLabel placeholder = new JLabel("---------------------------------------------------------------------------------------------");
+        placeholder.setFont(new Font(Font.DIALOG, Font.PLAIN, 4));
+        placeholder.setForeground(new Color(0, 0, 0, 0));
+        gbc.gridwidth = 2;
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        panel.add(placeholder, gbc);
 
         return panel;
     }

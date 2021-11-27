@@ -82,7 +82,6 @@ public class MessagePanel extends JPanel {
             listModel.addElement(m);
         }
         list = new JList<>(listModel);
-        list.setLayout(new FlowLayout(FlowLayout.LEFT));
         JScrollPane scroll = new JScrollPane();
         scroll.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
         scroll.setViewportView(list);
@@ -96,6 +95,7 @@ public class MessagePanel extends JPanel {
         list.setCellRenderer(new MessageRenderer(contact.getName()));
         list.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
         list.addListSelectionListener(new MessageSelectionListener());
+        list.setFixedCellHeight(90);
 
         text.requestFocus();
 

@@ -55,6 +55,13 @@ public class MessageRenderer implements ListCellRenderer<Object> {
         gbc.gridx = 1;
         panel.add(text, gbc);
 
+        JLabel placeholder = new JLabel("-------------------------------------------------------------------------------------");
+        placeholder.setForeground(new Color(0, 0, 0, 0));
+        gbc.gridwidth = 2;
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        panel.add(placeholder, gbc);
+
         return panel;
     }
 }
