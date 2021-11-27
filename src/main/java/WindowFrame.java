@@ -208,8 +208,7 @@ public class WindowFrame extends JFrame {
             AddContactPopup addcontact = new AddContactPopup();
             ImageIcon icon = new ImageIcon(new File("").getAbsolutePath() + "/src/design/addcontact.png");
             if (JOptionPane.showConfirmDialog(null, addcontact, "Add contact", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, icon) == JOptionPane.OK_OPTION){
-                System.out.println(((JTextField)addcontact.getComponent(1)).getText() + " " + ((JTextField)addcontact.getComponent(3)).getText());
-                if (((JTextField)addcontact.getComponent(1)).getText() != null || ((JTextField)addcontact.getComponent(3)).getText() != null){
+                if (!((JTextField)addcontact.getComponent(1)).getText().equals("") || !((JTextField)addcontact.getComponent(3)).getText().equals("")){
                     Contact newcontact = Contact.createContact(((JTextField)addcontact.getComponent(1)).getText(), ((JTextField)addcontact.getComponent(3)).getText());
                     if (newcontact != null){
                         ContactHandler.addContact(newcontact);

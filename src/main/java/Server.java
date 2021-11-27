@@ -33,8 +33,7 @@ public class Server extends Thread{
                 }
                 else {
                     String newname = Main.requestContact(address);
-                    System.out.println("???");
-                    if (newname != null){ //Szeretnenk-e hozzaadni?
+                    if (newname != null){
                         c = new Contact(newname, tmp.getAddress(), tmp);
                         contacts.addFirst(c);
                         tmp.init(c);
