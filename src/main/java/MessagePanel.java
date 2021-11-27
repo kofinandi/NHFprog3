@@ -113,8 +113,8 @@ public class MessagePanel extends JPanel {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (!text.getText().equals("")){
-                text.setText("");
                 contact.send(new Message(LocalDate.now(), LocalTime.now(), false, false, text.getText()));
+                text.setText("");
             }
         }
     }

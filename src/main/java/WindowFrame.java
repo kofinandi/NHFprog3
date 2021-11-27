@@ -109,7 +109,6 @@ public class WindowFrame extends JFrame {
         messages.setBorder(BorderFactory.createLineBorder(new Color(150, 150, 150), 1));
         this.add(messages, constraints);
 
-        list.setSelectedIndex(0);
         list.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
 
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -119,6 +118,7 @@ public class WindowFrame extends JFrame {
         if (list.getSelectedValue() == c){
             ((MessagePanel)messages.getComponent(0)).newMessage();
         }
+        list.updateUI();
     }
 
     public void notifyContact(){
@@ -153,7 +153,7 @@ public class WindowFrame extends JFrame {
     class CloseListener implements WindowListener{
         @Override
         public void windowOpened(WindowEvent e) {
-
+            list.setSelectedIndex(0);
         }
 
         @Override
@@ -204,6 +204,7 @@ public class WindowFrame extends JFrame {
             constraints.anchor = GridBagConstraints.PAGE_START;
             constraints.fill = GridBagConstraints.BOTH;
             messages.add(new MessagePanel(list.getSelectedValue()), constraints);
+            list.getSelectedValue().read();
             messages.updateUI();
         }
     }

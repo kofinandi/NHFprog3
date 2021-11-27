@@ -33,6 +33,15 @@ public class CustomListRenderer implements ListCellRenderer<Object> {
         gbc.gridy = 1;
         panel.add(address, gbc);
 
+        if (((Contact)value).unread() > 0){
+            JLabel unread = new JLabel(String.valueOf(((Contact)value).unread()));
+            unread.setFont(new Font(Font.DIALOG, Font.BOLD, 13));
+            unread.setForeground(new Color(194, 0, 0));
+            gbc.gridx = 1;
+            gbc.gridy = 0;
+            panel.add(unread, gbc);
+        }
+
         return panel;
     }
 }

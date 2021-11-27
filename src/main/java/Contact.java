@@ -17,6 +17,7 @@ public class Contact {
     private InetAddress address;
     private Connection connection = null;
     private LinkedList<Message> messages = new LinkedList<>();
+    private int unread = 0;
 
     static Contact createContact(String inname, String inip){
         InetAddress inaddress;
@@ -153,6 +154,14 @@ public class Contact {
         }
     }
 
+    public void read(){
+        unread = 0;
+    }
+
+    public int unread(){
+        return unread;
+    }
+
     public LinkedList<Message> getMessages(){
         return messages;
     }
@@ -204,7 +213,7 @@ public class Contact {
                 e.printStackTrace();
             }
         }
-        xmlStringBuilder.append("<message date = \"" + m.date + "\" time = \"" + m.time + "\" received = \"" + 1 + "\" file = \"" + m.file + "\">" + m.text + "</message>");
+        xmlStringBuilder.append("<message date = \"" + m.date + "\" time = \"" + m.time + "\" received = \"1\" file = \"" + m.file + "\">" + m.text + "</message>");
         try {
             PrintWriter pw = new PrintWriter(new FileWriter(messagefile, true));
             pw.println(xmlStringBuilder.toString());
@@ -213,6 +222,7 @@ public class Contact {
             e.printStackTrace();
         }
         messages.addLast(m);
+        unread++;
         Main.notifyMessage(this);
     }
 
@@ -292,6 +302,7 @@ public class Contact {
             e.printStackTrace();
         }
         messages.addLast(m);
+        unread++;
         Main.notifyMessage(this);
     }
 }

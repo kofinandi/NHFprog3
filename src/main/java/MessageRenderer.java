@@ -17,12 +17,12 @@ public class MessageRenderer implements ListCellRenderer<Object> {
 
         JLabel sender;
         if (((Message)value).received){
-            sender = new JLabel("me");
-            sender.setForeground(new Color(101, 101, 101));
-        }
-        else{
             sender = new JLabel(name);
             sender.setForeground(new Color(58, 83, 173));
+        }
+        else{
+            sender = new JLabel("me");
+            sender.setForeground(new Color(101, 101, 101));
         }
         sender.setFont(new Font(Font.DIALOG_INPUT,  Font.BOLD, 13));
         JLabel date = new JLabel(((Message)value).date.format(DateTimeFormatter.ofPattern("yyyy.MM.dd.")));
