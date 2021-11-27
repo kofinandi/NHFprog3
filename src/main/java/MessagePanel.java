@@ -29,8 +29,8 @@ public class MessagePanel extends JPanel {
 
         namepanel.setLayout(new GridBagLayout());
         name.setText(contact.getName());
-        name.setFont(new Font(Font.DIALOG_INPUT,  Font.BOLD, 20));
-        online.setFont(new Font(Font.DIALOG_INPUT,  Font.PLAIN, 13));
+        name.setFont(new Font(Font.DIALOG,  Font.BOLD, 20));
+        online.setFont(new Font(Font.DIALOG,  Font.PLAIN, 13));
         if (contact.online()){
             online.setForeground(new Color(51, 204, 51));
             online.setText("online");

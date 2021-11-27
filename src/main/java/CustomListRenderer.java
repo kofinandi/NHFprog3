@@ -11,7 +11,7 @@ public class CustomListRenderer implements ListCellRenderer<Object> {
 
         JLabel name = new JLabel(((Contact)value).getName());
         JLabel address = new JLabel(((Contact)value).getAddress());
-        address.setFont(new Font(Font.DIALOG_INPUT, Font.ITALIC, 13));
+        address.setFont(new Font(Font.DIALOG, Font.ITALIC, 13));
         address.setForeground(new Color(141, 141, 141));
         if (isSelected) {
             panel.setBackground(new Color(236, 236, 236));

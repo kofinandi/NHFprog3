@@ -32,9 +32,11 @@ public class Server extends Thread{
                     Main.addConnection(tmp);
                 }
                 else {
-                    if (Main.requestContact(address)){ //Szeretnenk-e hozzaadni?
-                        c = new Contact("Megadott nev", tmp.getAddress(), tmp);
-                        contacts.add(c);
+                    String newname = Main.requestContact(address);
+                    System.out.println("???");
+                    if (newname != null){ //Szeretnenk-e hozzaadni?
+                        c = new Contact(newname, tmp.getAddress(), tmp);
+                        contacts.addFirst(c);
                         tmp.init(c);
                         tmp.sendresponse("1");
                         Main.notifyContact();

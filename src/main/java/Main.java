@@ -26,7 +26,7 @@ public class Main {
         window.notifyContact();
     }
 
-    public static boolean requestContact(String address){
+    public static String requestContact(String address){
         return window.requestContact(address);
     }
 
