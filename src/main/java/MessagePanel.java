@@ -136,9 +136,11 @@ public class MessagePanel extends JPanel {
             if (((Message)list.getSelectedValue()).file){
                 File f = new File(((Message)list.getSelectedValue()).text);
                 Desktop dt = Desktop.getDesktop();
-                try {
-                    dt.open(f);
-                } catch (IOException ex) {
+                if (f.exists()){
+                    try {
+                        dt.open(f);
+                    } catch (IOException ex) {
+                    }
                 }
             }
         }

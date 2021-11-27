@@ -252,7 +252,6 @@ public class Contact {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        messages.addLast(m);
 
         try {
             FileInputStream input = new FileInputStream(f);
@@ -264,6 +263,7 @@ public class Contact {
             e.printStackTrace();
         }
 
+        messages.addLast(m);
         Main.notifyMessage(this);
     }
 

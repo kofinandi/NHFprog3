@@ -50,6 +50,7 @@ public class MessageListener extends Thread{
             if (arr[2].equals("1")){
                 filename = arr[3];
                 File incoming = new File(filename);
+                contact.receiveFile(arr[0], arr[1], filename);
                 try {
                     stream = new FileOutputStream(incoming);
                     IOUtils.copyLarge(in, stream);
