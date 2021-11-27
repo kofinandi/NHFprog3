@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;
 
@@ -120,7 +121,8 @@ public class WindowFrame extends JFrame {
 
     public String requestContact(String address){
         ConfirmContactPopup confirmcontact = new ConfirmContactPopup(address);
-        if (JOptionPane.showConfirmDialog(null, confirmcontact, "Confirm contact", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
+        ImageIcon icon = new ImageIcon(new File("").getAbsolutePath() + "/src/design/addcontact.png");
+        if (JOptionPane.showConfirmDialog(null, confirmcontact, "Confirm contact", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, icon) == JOptionPane.YES_OPTION){
             return ((JTextField)confirmcontact.getComponent(2)).getText();
         }
         return null;
@@ -188,7 +190,8 @@ public class WindowFrame extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             AddContactPopup addcontact = new AddContactPopup();
-            if (JOptionPane.showConfirmDialog(null, addcontact, "Add contact", JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION){
+            ImageIcon icon = new ImageIcon(new File("").getAbsolutePath() + "/src/design/addcontact.png");
+            if (JOptionPane.showConfirmDialog(null, addcontact, "Add contact", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, icon) == JOptionPane.OK_OPTION){
                 System.out.println(((JTextField)addcontact.getComponent(1)).getText() + " " + ((JTextField)addcontact.getComponent(3)).getText());
                 Contact newcontact = Contact.createContact(((JTextField)addcontact.getComponent(1)).getText(), ((JTextField)addcontact.getComponent(3)).getText());
                 if (newcontact != null){
