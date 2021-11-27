@@ -137,10 +137,12 @@ public class Contact {
 
     public void connect(Connection c){
         connection = c;
+        Main.notifyOnline(this);
     }
 
     public void disconnect(){
         connection = null;
+        Main.notifyOnline(this);
     }
 
     public void closeConnection(){

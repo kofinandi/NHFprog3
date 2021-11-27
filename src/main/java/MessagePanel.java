@@ -38,6 +38,9 @@ public class MessagePanel extends JPanel {
         else {
             online.setForeground(new Color(255, 63, 63));
             online.setText("offline");
+            text.setEnabled(false);
+            send.setEnabled(false);
+            file.setEnabled(false);
         }
         gbc.anchor = GridBagConstraints.BASELINE;
         gbc.gridx = 0;

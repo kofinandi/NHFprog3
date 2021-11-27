@@ -119,6 +119,22 @@ public class WindowFrame extends JFrame {
         listModel.addElement(contacts.getFirst());
     }
 
+    public void notifyOnline(Contact c){
+        if (list.getSelectedValue() == c){
+            GridBagConstraints gbc = new GridBagConstraints();
+            gbc.fill = GridBagConstraints.BOTH;
+            gbc.weightx = 0.8;
+            gbc.weighty = 1;
+            gbc.gridx = 1;
+            gbc.gridy = 1;
+            gbc.gridwidth = 2;
+
+            messages.removeAll();
+            messages.add(new MessagePanel(c), gbc);
+            messages.updateUI();
+        }
+    }
+
     public String requestContact(String address){
         ConfirmContactPopup confirmcontact = new ConfirmContactPopup(address);
         ImageIcon icon = new ImageIcon(new File("").getAbsolutePath() + "/src/design/addcontact.png");

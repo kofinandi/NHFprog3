@@ -27,7 +27,6 @@ public class MessageListener extends Thread{
         while (true){
             try {
                 ins = in.readUTF();
-                System.out.println("olvas");
             } catch (IOException e) {
                 try {
                     connection.close();

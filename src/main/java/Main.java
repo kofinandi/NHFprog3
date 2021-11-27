@@ -1,3 +1,4 @@
+import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -28,6 +29,10 @@ public class Main {
 
     public static String requestContact(String address){
         return window.requestContact(address);
+    }
+
+    public static void notifyOnline(Contact c){
+        window.notifyOnline(c);
     }
 
     public static void addConnection(Connection c){
