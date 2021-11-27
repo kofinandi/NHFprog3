@@ -18,17 +18,16 @@ public class WindowFrame extends JFrame {
 
     private JButton refresh = new JButton("Refresh");
     private JButton add = new JButton("Add contact");
+    private JLabel ipaddress = new JLabel();
 
     LinkedList<Contact> contacts;
     DefaultListModel<Contact> listModel;
     JList<Contact> list;
 
-    private LinkedList<JPanel> contactpanels = new LinkedList<>();
-
     public WindowFrame(LinkedList<Contact> cin){
         contacts = cin;
         this.setTitle("Peer to peer messenger");
-        this.setSize(1200, 900);
+        this.setSize(1000, 650);
         this.setResizable(true);
         this.setLayout(new GridBagLayout());
         this.addWindowListener(new CloseListener());
@@ -58,8 +57,15 @@ public class WindowFrame extends JFrame {
         menu.setBackground(new Color(219, 227, 255, 255));
         refresh.addActionListener(new RefreshListener());
         menu.add(refresh, BorderLayout.WEST);
+        JPanel container = new JPanel();
+        container.setLayout(new BorderLayout());
+        container.setBackground(menu.getBackground());
+        ipaddress.setText("Local IP: " + IPaddress.localAddress());
+        ipaddress.setForeground(new Color(87, 87, 87));
+        container.add(ipaddress, BorderLayout.WEST);
         add.addActionListener(new AddContactListener());
-        menu.add(add, BorderLayout.EAST);
+        container.add(add, BorderLayout.EAST);
+        menu.add(container, BorderLayout.EAST);
 
         messages.setLayout(new GridBagLayout());
         constraints.gridx = 0;
@@ -86,7 +92,7 @@ public class WindowFrame extends JFrame {
         this.add(menu, constraints);
 
         constraints.fill = GridBagConstraints.BOTH;
-        constraints.weightx = 0.2;
+        constraints.weightx = 0.3;
         constraints.weighty = 1;
         constraints.gridx = 0;
         constraints.gridy = 1;
@@ -95,7 +101,7 @@ public class WindowFrame extends JFrame {
         this.add(contactspane, constraints);
 
         constraints.fill = GridBagConstraints.BOTH;
-        constraints.weightx = 0.8;
+        constraints.weightx = 0.7;
         constraints.weighty = 1;
         constraints.gridx = 1;
         constraints.gridy = 1;
@@ -224,6 +230,7 @@ public class WindowFrame extends JFrame {
     public class RefreshListener implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
+            ipaddress.setText("Local IP: " + IPaddress.localAddress());
             ContactHandler.reload();
         }
     }
