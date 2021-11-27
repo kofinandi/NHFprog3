@@ -10,6 +10,9 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+/**
+ * Ez az osztály felelős a fő ablak üzenet küldő részének a megjelenítéséért.
+ */
 public class MessagePanel extends JPanel {
     Contact contact;
     private JPanel namepanel = new JPanel();
@@ -26,15 +29,20 @@ public class MessagePanel extends JPanel {
     private JButton send = new JButton("Send");
     private JButton file = new JButton("Send file");
 
+    /**
+     * @param c Létrehozza az üzenetek panelt a megfelelő kontakthoz.
+     */
     public MessagePanel(Contact c){
         contact = c;
 
         GridBagConstraints gbc = new GridBagConstraints();
 
+        //Elrendezés
         namepanel.setLayout(new GridBagLayout());
         name.setText(contact.getName());
         name.setFont(new Font(Font.DIALOG,  Font.BOLD, 20));
         online.setFont(new Font(Font.DIALOG,  Font.PLAIN, 13));
+        //Offline esetén kikapcsolja a küldés funkciót
         if (contact.online()){
             online.setForeground(new Color(51, 204, 51));
             online.setText("online");
@@ -55,6 +63,7 @@ public class MessagePanel extends JPanel {
         gbc.gridx = 1;
         namepanel.add(online, gbc);
 
+        //Gombok beállítása
         send.addActionListener(new sendButtonListener());
         text.addActionListener(new sendButtonListener());
         file.addActionListener(new sendFileListener());
@@ -77,7 +86,8 @@ public class MessagePanel extends JPanel {
 
         messages.setLayout(new GridBagLayout());
 
-       listModel = new DefaultListModel<>();
+        //Üzenetek listája (JList)
+        listModel = new DefaultListModel<>();
         for (Message m : contact.getMessages()){
             listModel.addElement(m);
         }
@@ -92,6 +102,7 @@ public class MessagePanel extends JPanel {
         gbc.gridy = 0;
         messages.add(scroll, gbc);
 
+        //Saját üzenet renderelő beállítása
         list.setCellRenderer(new MessageRenderer(contact.getName()));
         list.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
         list.addListSelectionListener(new MessageSelectionListener());
@@ -105,12 +116,22 @@ public class MessagePanel extends JPanel {
         this.add(sender, BorderLayout.SOUTH);
     }
 
+    /**
+     * Értesíti egy új üzenet érkezéséről a panelt. Az új üzenetet megjeleníti.
+     */
     public void newMessage(){
         listModel.addElement(contact.getMessages().getLast());
         list.ensureIndexIsVisible(listModel.indexOf(contact.getMessages().getLast()));
     }
 
+    /**
+     * Ez az osztály felelős a küldés gomb eseménykezeléséért.
+     */
     public class sendButtonListener implements ActionListener {
+        /**
+         * Elküldi az üzenetet a kontakton keresztül és törli a szövegmező tartalmát.
+         * @param e A gomb eseménye
+         */
         @Override
         public void actionPerformed(ActionEvent e) {
             if (!text.getText().equals("")){
@@ -120,7 +141,14 @@ public class MessagePanel extends JPanel {
         }
     }
 
+    /**
+     * Ez az osztály felelős a fájl küldés gomb eseménykezeléséért.
+     */
     public class sendFileListener implements ActionListener{
+        /**
+         * Megjelenít egy fájl választó ablakot, ahonnan kiválasztott fájlal elindítja a kontakton keresztül a fájl küldését.
+         * @param e A gomb eseménye
+         */
         @Override
         public void actionPerformed(ActionEvent e) {
             JFileChooser j = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
@@ -131,7 +159,14 @@ public class MessagePanel extends JPanel {
         }
     }
 
+    /**
+     * Ez az osztály felelős az üzenetekre kattintásért.
+     */
     public class MessageSelectionListener implements ListSelectionListener {
+        /**
+         * Ha egy üzenetre kattintunk (kiválasztjuk), akkor ha az egy fájl, akkor megnyitja a rendszer alapértelmezetten hozzá rendelt programjával.
+         * @param e Bekövetkezett esemény
+         */
         @Override
         public void valueChanged(ListSelectionEvent e) {
             if (((Message)list.getSelectedValue()).file){

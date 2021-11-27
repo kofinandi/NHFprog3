@@ -1,7 +1,6 @@
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,6 +12,10 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.LinkedList;
 
+/**
+ * Ez az osztály felelős a fő ablak megjelenítéséért és elrendezéséért,
+ * valamint ezen keresztül tartja a kapcsolatot a backend és a GUI.
+ */
 public class WindowFrame extends JFrame {
     private JPanel menu = new JPanel();
     private JPanel contactspane = new JPanel();
@@ -26,8 +29,12 @@ public class WindowFrame extends JFrame {
     DefaultListModel<Contact> listModel;
     JList<Contact> list;
 
+    /**
+     * @param cin Lista, amiben a kontaktok tárolódnak. Ezzel tudja megjeleníteni a kontakot listáját, és a hozzájuk tartozó üzeneteket.
+     */
     public WindowFrame(LinkedList<Contact> cin){
         contacts = cin;
+        //Ablak beállítása
         this.setTitle("Peer to peer messenger");
         this.setSize(1000, 650);
         this.setResizable(true);
@@ -37,8 +44,8 @@ public class WindowFrame extends JFrame {
         this.setIconImage(icon);
         GridBagConstraints constraints = new GridBagConstraints();
 
+        //Kontaktlista beállítása
         contactspane.setLayout(new GridLayout());
-
         listModel = new DefaultListModel<>();
         for (Contact c : contacts){
             listModel.addElement(c);
@@ -49,12 +56,11 @@ public class WindowFrame extends JFrame {
         list.addListSelectionListener(new ContactSelectionListener());
         JScrollPane scroll = new JScrollPane();
         scroll.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
-
         scroll.setViewportView(list);
         contactspane.add(scroll);
-
         list.setCellRenderer(new CustomListRenderer());
 
+        //Menü beállítása
         menu.setLayout(new BorderLayout());
         menu.setBackground(new Color(219, 227, 255, 255));
         refresh.addActionListener(new RefreshListener());
@@ -74,6 +80,7 @@ public class WindowFrame extends JFrame {
         container.add(add, BorderLayout.EAST);
         menu.add(container, BorderLayout.EAST);
 
+        //Üzenetek rész beállítása
         messages.setLayout(new GridBagLayout());
         constraints.gridx = 0;
         constraints.gridy = 0;
@@ -88,6 +95,7 @@ public class WindowFrame extends JFrame {
             messages.setBackground(new Color(227, 227, 227));
         }
 
+        //Menü hozzáadása az ablakhoz az elrendezéssel
         constraints.anchor = GridBagConstraints.PAGE_START;
         constraints.fill = GridBagConstraints.BOTH;
         constraints.weightx = 1;
@@ -98,6 +106,7 @@ public class WindowFrame extends JFrame {
         menu.setBorder(BorderFactory.createLineBorder(new Color(150, 150, 150), 1));
         this.add(menu, constraints);
 
+        //Kontaktok panel hozzáadása az ablakhoz az elrendezéssel
         constraints.fill = GridBagConstraints.BOTH;
         constraints.weightx = 0.3;
         constraints.weighty = 1;
@@ -107,6 +116,7 @@ public class WindowFrame extends JFrame {
         contactspane.setBorder(BorderFactory.createLineBorder(new Color(150, 150, 150), 1));
         this.add(contactspane, constraints);
 
+        //Üzenet panel hozzáadása az ablakhoz az elrendezéssel
         constraints.fill = GridBagConstraints.BOTH;
         constraints.weightx = 0.7;
         constraints.weighty = 1;
@@ -121,6 +131,9 @@ public class WindowFrame extends JFrame {
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
 
+    /**
+     * @param c Értesíti a megjelenítést, hogy az adott kontakt üzenetet kapott. Ha éppen láthatóak az üzenetei, akkor meg is jelennek.
+     */
     public void notifyMessage(Contact c){
         if (list.getSelectedValue() == c){
             ((MessagePanel)messages.getComponent(0)).newMessage();
@@ -129,10 +142,16 @@ public class WindowFrame extends JFrame {
         list.updateUI();
     }
 
+    /**
+     * Értesíti a megjelenítést, hogy új kontaktot adtak a listához, ez alapján frissül.
+     */
     public void notifyContact(){
         listModel.addElement(contacts.getFirst());
     }
 
+    /**
+     * @param c Értesíti a megjelenítést, hogy az adott kontakt online vagy offline lett. Ha éppen ennek a kontaktnak az üzenetei láthatóak akkor megjelenik a státusza.
+     */
     public void notifyOnline(Contact c){
         if (list.getSelectedValue() == c){
             GridBagConstraints gbc = new GridBagConstraints();
@@ -149,24 +168,46 @@ public class WindowFrame extends JFrame {
         }
     }
 
+    /**
+     * @param address Értesíti a megjelenítést, hogy egy új kontakt szeretne csatlakozni. Feldob egy ablakot, amiben megkérdezi, hogy szeretnénk-e hozzáadni, ha igen akkor milyen néven.
+     *                Ha nem adunk meg nevet akkor úgy veszi mintha elutasítottuk volna.
+     * @return Visszaadja az elfogadott kontakt nevét, vagy null-t, ha elutasítják.
+     */
     public String requestContact(String address){
         ConfirmContactPopup confirmcontact = new ConfirmContactPopup(address);
         ImageIcon icon = new ImageIcon(new File("").getAbsolutePath() + "/src/design/addcontact.png");
         if (JOptionPane.showConfirmDialog(null, confirmcontact, "Confirm contact", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, icon) == JOptionPane.YES_OPTION){
+            if (((JTextField)confirmcontact.getComponent(2)).getText() == null){
+                return null;
+            }
             return ((JTextField)confirmcontact.getComponent(2)).getText();
         }
         return null;
     }
 
+    /**
+     * Ez az osztály felelős az ablak eseményeinek a kezeléséért.
+     */
     class CloseListener implements WindowListener{
+        /**
+         * Megnyitás után kiválasztja az első elemet a kontaktok közül, ha létezik.
+         * @param e Esemény objektuma.
+         */
         @Override
         public void windowOpened(WindowEvent e) {
             try {
-                list.setSelectedIndex(0);
+                if (list.getModel().getSize() > 0){
+                    list.setSelectedIndex(0);
+                }
             } catch (NullPointerException ex){
+                //Indításkor néha ez a metódus exceptiont dob, de helyesen működik
             }
         }
 
+        /**
+         * Az ablak bezárásakor meghívja a kontakt kezelő kilépő eseményét, majd kilép.
+         * @param e Esemény objektuma.
+         */
         @Override
         public void windowClosing(WindowEvent e) {
             try {
@@ -203,7 +244,14 @@ public class WindowFrame extends JFrame {
         }
     }
 
+    /**
+     * Ez az osztály felelős, azért, hogy kezelje, ha egy kontaktot kiválasztanak a listából.
+     */
     public class ContactSelectionListener implements ListSelectionListener {
+        /**
+         * Kicseréli a megjelenített üzeneteket a kiválasztott kontakt üzeneteire.
+         * @param e Esemény objektuma.
+         */
         @Override
         public void valueChanged(ListSelectionEvent e) {
             messages.removeAll();
@@ -221,7 +269,15 @@ public class WindowFrame extends JFrame {
         }
     }
 
+    /**
+     * Ez az osztály felelős, azért, hogy kezelje, ha rákattintanak az új kontakt gombra.
+     */
     public class AddContactListener implements ActionListener{
+        /**
+         * Feldob egy ablakot ahol megadhatjuk az új kontakt nevét és IP címét. Ha OK-t választunk megpróbál csatlakozni a kontakthoz.
+         * Ha nem sikerül (offline, hiba vagy elutasította a fogadó), kiírja, és nem kerül hozzáadásra a kontakt.
+         * @param e Esemény objektuma.
+         */
         @Override
         public void actionPerformed(ActionEvent e) {
             AddContactPopup addcontact = new AddContactPopup();
@@ -240,7 +296,14 @@ public class WindowFrame extends JFrame {
         }
     }
 
+    /**
+     * Ez az osztály felelős, azért, hogy kezelje, ha rákattintanak a frissítés gombra.
+     */
     public class RefreshListener implements ActionListener{
+        /**
+         * Meghívja a kontakt kezelő újratöltés metódusát, valamint frissíti a kiírt IP címet.
+         * @param e Esemény objektuma.
+         */
         @Override
         public void actionPerformed(ActionEvent e) {
             InetAddress addr = null;
