@@ -18,17 +18,21 @@ public class MessageRenderer implements ListCellRenderer<Object> {
         JLabel sender;
         if (((Message)value).received){
             sender = new JLabel("me");
+            sender.setForeground(new Color(101, 101, 101));
         }
         else{
             sender = new JLabel(name);
+            sender.setForeground(new Color(58, 83, 173));
         }
         sender.setFont(new Font(Font.DIALOG_INPUT,  Font.BOLD, 13));
-        sender.setForeground(new Color(58, 83, 173));
         JLabel date = new JLabel(((Message)value).date.format(DateTimeFormatter.ofPattern("yyyy.MM.dd.")));
         date.setForeground(new Color(143, 143, 143));
         JLabel time = new JLabel(((Message)value).time.format(DateTimeFormatter.ofPattern("HH:mm:ss")));
         time.setForeground(new Color(143, 143, 143));
         JLabel text = new JLabel(((Message)value).text);
+        if (((Message)value).file){
+            text.setForeground(new Color(0, 122, 0));
+        }
 
         panel.setBackground(list.getBackground());
         panel.setForeground(list.getForeground());

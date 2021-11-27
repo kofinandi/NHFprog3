@@ -1,8 +1,12 @@
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -90,8 +94,8 @@ public class MessagePanel extends JPanel {
         messages.add(scroll, gbc);
 
         list.setCellRenderer(new MessageRenderer(contact.getName()));
-        list.setFocusable(false);
         list.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        list.addListSelectionListener(new MessageSelectionListener());
 
         text.requestFocus();
 
@@ -122,6 +126,20 @@ public class MessagePanel extends JPanel {
             int r = j.showOpenDialog(null);
             if (r == JFileChooser.APPROVE_OPTION){
                 contact.sendFile(j.getSelectedFile());
+            }
+        }
+    }
+
+    public class MessageSelectionListener implements ListSelectionListener {
+        @Override
+        public void valueChanged(ListSelectionEvent e) {
+            if (((Message)list.getSelectedValue()).file){
+                File f = new File(((Message)list.getSelectedValue()).text);
+                Desktop dt = Desktop.getDesktop();
+                try {
+                    dt.open(f);
+                } catch (IOException ex) {
+                }
             }
         }
     }
