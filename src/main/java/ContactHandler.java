@@ -6,10 +6,19 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.LinkedList;
 
+/**
+ * A kontaktok kezeléséért felelős csak statikus metódusokkal rendelkező osztály.
+ * Azért statikus, mert szinte mindenhonnan el kell tudni érni ezeket a funkcionalitásokat, nem tartoznak adott objektumhoz.
+ */
 public class ContactHandler {
     private static LinkedList<Contact> contacts;
     private static File contactfile;
 
+    /**
+     * Betölti az elmentett kontaktokat egy JSON fájlból.
+     * @param c A lista ahova a kontaktokat betölti.
+     * @throws IOException
+     */
     public static void setup(LinkedList<Contact> c) throws IOException {
         contacts = c;
         contactfile = new File("contacts.json");
@@ -30,17 +39,27 @@ public class ContactHandler {
             JSONObject js = new JSONObject(jsonstring.toString());
             JSONArray ja = js.getJSONArray("contacts");
 
+            //Minden kontakthoz megpróbál csatlakozni
             for (int i = 0; i < ja.length(); i++){
                 contacts.add(Contact.loadContact(ja.getJSONObject(i).getString("name"), ja.getJSONObject(i).getString("address")));
             }
         }
     }
 
+    /**
+     * Új kontaktot ad a kontaktok listájához.
+     * @param c Új kontakt.
+     */
     public static void addContact(Contact c){
         contacts.addFirst(c);
         Main.notifyContact();
     }
 
+    /**
+     * Visszaadja, hogy talált-e ilyen címmel kontaktot.
+     * @param a Cím, amivel a kontaktot keressük.
+     * @return A megtalált kontakt, egyéb esetben null.
+     */
     public static Contact haveContact(String a){
         for (Contact i : contacts){
             if (i.getAddress().equals(a)){
@@ -50,6 +69,10 @@ public class ContactHandler {
         return null;
     }
 
+    /**
+     * Kilépéskor minden kontaktról lecsatlakozik, valamint elmenti a kontaktokat egy JSON fájlba.
+     * @throws IOException
+     */
     public static void quit() throws IOException {
         JSONObject ojs = new JSONObject();
         JSONArray ocontacts = new JSONArray();
@@ -71,6 +94,9 @@ public class ContactHandler {
         contacts.removeAll(contacts);
     }
 
+    /**
+     * Minden kontaktról lecsatlakozik, majd megpróbál újra csatlakozni rá.
+     */
     public static void reload(){
         for (Contact c : contacts){
             if (c.online()){

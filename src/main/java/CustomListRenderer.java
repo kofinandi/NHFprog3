@@ -1,7 +1,19 @@
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * A kontaktokhoz tartozó panel lista celláinak egyedi megjelenítője.
+ */
 public class CustomListRenderer implements ListCellRenderer<Object> {
+    /**
+     * A saját renderelő interface-hez illeszkedő konstruktora.
+     * @param list JList, amihez tartozik a renderelő.
+     * @param value Objektum, amit meg kell jeleníteni a JListben.
+     * @param index Objektum indexe.
+     * @param isSelected Objektum ki van-e választva.
+     * @param cellHasFocus Objektum fokuszban van-e.
+     * @return JPanel Visszaad egy JPanel-t, amiben a megfelelő adatok vannak megjelenítve.
+     */
     public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
         JPanel panel = new JPanel();
 
@@ -9,6 +21,7 @@ public class CustomListRenderer implements ListCellRenderer<Object> {
 
         GridBagConstraints gbc = new GridBagConstraints();
 
+        //Szövegek elrendezése
         JLabel name = new JLabel(((Contact)value).getName());
         JLabel address = new JLabel(((Contact)value).getAddress());
         address.setFont(new Font(Font.DIALOG, Font.ITALIC, 13));
@@ -33,6 +46,7 @@ public class CustomListRenderer implements ListCellRenderer<Object> {
         gbc.gridy = 2;
         panel.add(address, gbc);
 
+        //Olvasatlan üzenetek számának megjelenítése
         if (((Contact)value).unread() > 0){
             JLabel unread = new JLabel(String.valueOf(((Contact)value).unread()));
             unread.setFont(new Font(Font.DIALOG, Font.BOLD, 13));
@@ -42,6 +56,8 @@ public class CustomListRenderer implements ListCellRenderer<Object> {
             panel.add(unread, gbc);
         }
 
+        //Mivel a JListnek nem működik semmilyen elrendezése, és a víszintes méret beállításokat sem tartja be, ezért egy láthatatlan szöveggel
+        //minden üzenet mező ugyanolyan széles lesz, így megfelelően lesznek elrendezve.
         JLabel placeholder = new JLabel("---------------------------------------------------------------------------------------------");
         placeholder.setFont(new Font(Font.DIALOG, Font.PLAIN, 4));
         placeholder.setForeground(new Color(0, 0, 0, 0));

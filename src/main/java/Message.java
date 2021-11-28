@@ -1,6 +1,9 @@
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+/**
+ * Üzenetek tárolására szolgáló osztály. Nem tud semmit csinálni, csak a megfelelő adatok együtt tárolásáért felel.
+ */
 public class Message {
     public LocalDate date;
     public LocalTime time;
