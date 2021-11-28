@@ -19,11 +19,15 @@ public class Main {
     }
 
     public static void notifyMessage(Contact c){
-        window.notifyMessage(c);
+        if (window != null){
+            window.notifyMessage(c);
+        }
     }
 
     public static void notifyContact(){
-        window.notifyContact();
+        if (window != null){
+            window.notifyContact();
+        }
     }
 
     public static String requestContact(String address){
@@ -31,7 +35,9 @@ public class Main {
     }
 
     public static void notifyOnline(Contact c){
-        window.notifyOnline(c);
+        if (window != null){
+            window.notifyOnline(c);
+        }
     }
 
 }
