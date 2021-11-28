@@ -233,7 +233,7 @@ public class Contact {
 
     public void sendFile(File f){
         File messagesfolder = new File("messages");
-        File messagefile = new File(messagesfolder,address + ".messages");
+        File messagefile = new File(messagesfolder,getAddress() + ".messages");
 
         StringBuilder xmlStringBuilder = new StringBuilder();
 
@@ -272,7 +272,7 @@ public class Contact {
 
     public void receiveFile(String date, String time, String filename){
         File messagesfolder = new File("messages");
-        File messagefile = new File(messagesfolder,name.toLowerCase() + ".messages");
+        File messagefile = new File(messagesfolder,getAddress() + ".messages");
 
         StringBuilder xmlStringBuilder = new StringBuilder();
 

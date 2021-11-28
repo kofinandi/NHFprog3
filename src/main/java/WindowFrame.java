@@ -30,6 +30,7 @@ public class WindowFrame extends JFrame {
     JList<Contact> list;
 
     /**
+     * Létrehozza a fő ablakot a megfelelő elrendezéssel.
      * @param cin Lista, amiben a kontaktok tárolódnak. Ezzel tudja megjeleníteni a kontakot listáját, és a hozzájuk tartozó üzeneteket.
      */
     public WindowFrame(LinkedList<Contact> cin){
@@ -40,7 +41,7 @@ public class WindowFrame extends JFrame {
         this.setResizable(true);
         this.setLayout(new GridBagLayout());
         this.addWindowListener(new CloseListener());
-        Image icon = Toolkit.getDefaultToolkit().getImage("/Users/kofinandi/OneDrive - Budapesti Műszaki és Gazdaságtudományi Egyetem/3. félév/Prog3/NHF/src/design/pear.png");
+        Image icon = Toolkit.getDefaultToolkit().getImage(new File("").getAbsolutePath() + "/src/design/pear.png");
         this.setIconImage(icon);
         GridBagConstraints constraints = new GridBagConstraints();
 
