@@ -1,6 +1,8 @@
 import org.junit.Assert;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import p2p.backend.Connection;
+import p2p.backend.Contact;
+import p2p.backend.Message;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -8,8 +10,6 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.LinkedList;
 
 import static org.junit.jupiter.api.Assertions.*;

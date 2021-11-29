@@ -1,3 +1,8 @@
+package p2p.GUI;
+
+import p2p.backend.Contact;
+import p2p.backend.Message;
+
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;

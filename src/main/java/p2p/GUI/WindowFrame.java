@@ -1,3 +1,8 @@
+package p2p.GUI;
+
+import p2p.backend.Contact;
+import p2p.backend.ContactHandler;
+
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -285,12 +290,17 @@ public class WindowFrame extends JFrame {
             ImageIcon icon = new ImageIcon(new File("").getAbsolutePath() + "/src/design/addcontact.png");
             if (JOptionPane.showConfirmDialog(null, addcontact, "Add contact", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, icon) == JOptionPane.OK_OPTION){
                 if (!((JTextField)addcontact.getComponent(1)).getText().equals("") || !((JTextField)addcontact.getComponent(3)).getText().equals("")){
-                    Contact newcontact = Contact.createContact(((JTextField)addcontact.getComponent(1)).getText(), ((JTextField)addcontact.getComponent(3)).getText());
-                    if (newcontact != null){
-                        ContactHandler.addContact(newcontact);
+                    if (ContactHandler.haveContact(((JTextField)addcontact.getComponent(3)).getText()) == null){
+                        Contact newcontact = Contact.createContact(((JTextField)addcontact.getComponent(1)).getText(), ((JTextField)addcontact.getComponent(3)).getText());
+                        if (newcontact != null){
+                            ContactHandler.addContact(newcontact);
+                        }
+                        else {
+                            JOptionPane.showMessageDialog(null,"Cannot add contact!","Error", JOptionPane.ERROR_MESSAGE);
+                        }
                     }
                     else {
-                        JOptionPane.showMessageDialog(null,"Cannot add contact!","Error", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null,"Already have contact!","Error", JOptionPane.ERROR_MESSAGE);
                     }
                 }
             }

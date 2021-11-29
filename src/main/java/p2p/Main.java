@@ -1,8 +1,15 @@
+package p2p;
+
+import p2p.GUI.WindowFrame;
+import p2p.backend.Contact;
+import p2p.backend.ContactHandler;
+import p2p.backend.Server;
+
 import java.io.*;
 import java.util.LinkedList;
 
 /**
- * A program Main osztálya. Innen indul a kontaktok betöltése, a grafika és a szerver (ami figyeli az új csatlakozásokat).
+ * A program p2p.Main osztálya. Innen indul a kontaktok betöltése, a grafika és a szerver (ami figyeli az új csatlakozásokat).
  */
 public class Main {
     private static WindowFrame window;
@@ -28,7 +35,7 @@ public class Main {
     }
 
     /**
-     * Ezzel a függvénnyel lehet értesíteni a Main-t, hogy új üzenet érkezett. Értesíti róla a megjelenítést.
+     * Ezzel a függvénnyel lehet értesíteni a p2p.Main-t, hogy új üzenet érkezett. Értesíti róla a megjelenítést.
      * @param c A kontakt, akitől az üzenet érkezett.
      */
     public static void notifyMessage(Contact c){
@@ -38,7 +45,7 @@ public class Main {
     }
 
     /**
-     * Ezzel a függvénnyel lehet értesíteni a Main-t, hogy új kontaktot adtak hozzá. Értesíti róla a megjelenítést.
+     * Ezzel a függvénnyel lehet értesíteni a p2p.Main-t, hogy új kontaktot adtak hozzá. Értesíti róla a megjelenítést.
      */
     public static void notifyContact(){
         if (window != null){
@@ -47,7 +54,7 @@ public class Main {
     }
 
     /**
-     * Ezzel a függvénnyel lehet értesíteni a Main-t, hogy új kontakt szeretne csatlakozni. Értesíti róla a megjelenítést.
+     * Ezzel a függvénnyel lehet értesíteni a p2p.Main-t, hogy új kontakt szeretne csatlakozni. Értesíti róla a megjelenítést.
      * @param address Új kontakt IP címe.
      * @return Visszaadja az új kontaktnak adott nevet, ha elutasították, akkor null.
      */
@@ -56,7 +63,7 @@ public class Main {
     }
 
     /**
-     * Ezzel a függvénnyel lehet értesíteni a Main-t, hogy egy kontakt státusza megváltozott (online vagy offline). Értesíti róla a megjelenítést.
+     * Ezzel a függvénnyel lehet értesíteni a p2p.Main-t, hogy egy kontakt státusza megváltozott (online vagy offline). Értesíti róla a megjelenítést.
      * @param c Kontakt, amelyiknek megváltozott a státusza.
      */
     public static void notifyOnline(Contact c){

@@ -1,3 +1,7 @@
+package p2p.GUI;
+
+import p2p.backend.Contact;
+
 import javax.swing.*;
 import java.awt.*;
 

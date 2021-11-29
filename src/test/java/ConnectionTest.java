@@ -1,9 +1,11 @@
 import org.junit.jupiter.api.Test;
+import p2p.backend.Connection;
+import p2p.backend.ConnectionDenied;
+import p2p.backend.Contact;
 
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.net.UnknownHostException;
 
 import static org.junit.jupiter.api.Assertions.*;
 

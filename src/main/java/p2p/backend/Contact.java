@@ -1,8 +1,12 @@
+package p2p.backend;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import org.xml.sax.InputSource;
+import p2p.Main;
+
 import javax.xml.parsers.*;
 import java.io.*;
 import java.time.LocalDate;
@@ -26,7 +30,7 @@ public class Contact {
      * @param inip IP cím az új kontakthoz.
      * @return Visszaadja az új kontaktot.
      */
-    static Contact createContact(String inname, String inip){
+    public static Contact createContact(String inname, String inip){
         InetAddress inaddress;
         try {
             inaddress = InetAddress.getByName(inip);
@@ -59,7 +63,7 @@ public class Contact {
      * @param inip IP cím a betöltendő kontakthoz.
      * @return Visszaadja a betöltött kontaktot.
      */
-    static Contact loadContact(String inname, String inip){
+    public static Contact loadContact(String inname, String inip){
         InetAddress inaddress;
         try {
             inaddress = InetAddress.getByName(inip);
@@ -244,7 +248,7 @@ public class Contact {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        //Elküldi az üzenetet, hozzáadja az üzenetekhez és szól a Main-nek, hogy új üzenetet kell megjeleníteni
+        //Elküldi az üzenetet, hozzáadja az üzenetekhez és szól a p2p.Main-nek, hogy új üzenetet kell megjeleníteni
         messages.addLast(m);
         connection.send(m);
         Main.notifyMessage(this);
@@ -279,7 +283,7 @@ public class Contact {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        //Hozzáadja az üzenetekhez, növeli az olvasatlan üzenetek számát és szól a Main-nek, hogy új üzenetet kell megjeleníteni
+        //Hozzáadja az üzenetekhez, növeli az olvasatlan üzenetek számát és szól a p2p.Main-nek, hogy új üzenetet kell megjeleníteni
         messages.addLast(m);
         unread++;
         Main.notifyMessage(this);
@@ -348,7 +352,7 @@ public class Contact {
             e.printStackTrace();
         }
 
-        //Hozzáadja az üzenetekhez és szól a Main-nek, hogy új üzenetet kell megjeleníteni
+        //Hozzáadja az üzenetekhez és szól a p2p.Main-nek, hogy új üzenetet kell megjeleníteni
         messages.addLast(m);
         Main.notifyMessage(this);
     }
@@ -380,7 +384,7 @@ public class Contact {
             e.printStackTrace();
         }
 
-        //Hozzáadja az üzenetekhez, növeli az olvasatlan üzenetek számát és szól a Main-nek, hogy új üzenetet kell megjeleníteni
+        //Hozzáadja az üzenetekhez, növeli az olvasatlan üzenetek számát és szól a p2p.Main-nek, hogy új üzenetet kell megjeleníteni
         messages.addLast(m);
         unread++;
         Main.notifyMessage(this);

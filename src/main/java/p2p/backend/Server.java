@@ -1,3 +1,7 @@
+package p2p.backend;
+
+import p2p.Main;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.LinkedList;
@@ -17,7 +21,7 @@ public class Server extends Thread{
     /**
      * Szerver szál futtatása. Egy végtelen cilusban folyamatosan figyeli, hogy mikor jön új csatlakozás.
      * Ha új csatlakozás érkezik ellenőrzi, hogy új vagy korábbi kontakt csatlakozik-e. Ha korábbi, akkor engedi a csatlakozást.
-     * Ha új, akkor szól a Main osztálynak, hogy felhasználói beavatkozás kell az új kontakt elfogadásához.
+     * Ha új, akkor szól a p2p.Main osztálynak, hogy felhasználói beavatkozás kell az új kontakt elfogadásához.
      * A csatlakozott kontaktot inicializálja.
      */
     @Override
@@ -62,7 +66,7 @@ public class Server extends Thread{
                 }
 
             } catch (IOException e) {
-                System.out.println("Connection request error.");
+                System.out.println("p2p.backend.Connection request error.");
             }
         }
     }

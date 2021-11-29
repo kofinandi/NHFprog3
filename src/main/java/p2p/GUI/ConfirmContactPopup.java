@@ -1,3 +1,5 @@
+package p2p.GUI;
+
 import javax.swing.*;
 import java.awt.*;
 
