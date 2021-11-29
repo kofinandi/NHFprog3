@@ -15,12 +15,18 @@ import java.util.LinkedList;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ContactTest {
+    /**
+     * Megpróbál nem létező IP címmel létrehozni egy kontaktot, de null-t kell kapnia, mivel így nem hozható létre.
+     */
     @Test
     void createContact() {
         Contact c = Contact.createContact("Teszt", "192.0.2.0");
         Assert.assertNull(c);
     }
 
+    /**
+     * Betölt egy korábban elmentett kontaktot.
+     */
     @Test
     void loadContact() {
         Contact c = Contact.loadContact("Teszt kontakt", "192.0.2.1");
@@ -30,6 +36,10 @@ class ContactTest {
         assertEquals(c.unread(), 0);
     }
 
+    /**
+     * Létrehoz egy már létező kontakthoz egy objektumot és megnézi, hogy sikerült-e betölteni az üzeneteket.
+     * @throws UnknownHostException
+     */
     @Test
     void constructor() throws UnknownHostException {
         Contact c = new Contact("Teszt", InetAddress.getByName("192.0.2.2"));
@@ -47,6 +57,10 @@ class ContactTest {
         assertTrue(test.get(2).received);
     }
 
+    /**
+     * Ellenőrzi az olvastlan üzenet számát.
+     * @throws UnknownHostException
+     */
     @Test
     void readMessages() throws UnknownHostException {
         Contact c = new Contact("Név", InetAddress.getByName("192.0.2.3"));
@@ -55,6 +69,10 @@ class ContactTest {
         assertEquals(c.unread(), 0);
     }
 
+    /**
+     * Egy kontakthoz hozzáad egy teszt csatlakozást, majd lecsatlakoztatja.
+     * @throws IOException
+     */
     @Test
     void connect() throws IOException {
         Contact c = new Contact("Példa", InetAddress.getByName("192.0.2.4"));
@@ -67,6 +85,10 @@ class ContactTest {
         assertFalse(c.online());
     }
 
+    /**
+     * Teszteli az üzenetek fogadását. Új üzenetet fogad a kontakttól, majd leellenőrzi, hogy sikerült-e elmenteni.
+     * @throws UnknownHostException
+     */
     @Test
     void receive() throws UnknownHostException {
         LocalDate d = LocalDate.now();

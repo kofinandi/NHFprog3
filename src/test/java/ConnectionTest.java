@@ -8,6 +8,10 @@ import java.net.UnknownHostException;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ConnectionTest {
+    /**
+     * Létrehoz egy teszt kapcsolatot agy teszt kontakttal.
+     * @throws IOException
+     */
     @Test
     void init() throws IOException {
         Contact test = new Contact("Teszt", InetAddress.getByName("192.0.2.2"));
@@ -15,11 +19,20 @@ class ConnectionTest {
         c.init(test);
     }
 
+    /**
+     * Létrehoz egy olyan kapcsolatot, aminek hibát kell dobni, mert nem tud csatlakozni.
+     * @throws IOException
+     * @throws ConnectionDenied
+     */
     @Test
     void constructor() throws IOException, ConnectionDenied {
         Exception exception = assertThrows(IOException.class, () -> {new Connection(InetAddress.getByName("192.0.2.0"));});
     }
 
+    /**
+     * Létrehoz egy kapcsolatot, majd bezárja.
+     * @throws IOException
+     */
     @Test
     void close() throws IOException {
         Connection test = new Connection(new Socket("google.com", 80));

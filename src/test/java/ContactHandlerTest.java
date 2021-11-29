@@ -15,18 +15,29 @@ import static org.junit.jupiter.api.Assertions.*;
 class ContactHandlerTest {
     LinkedList<Contact> test = new LinkedList<>();
 
+    /**
+     * Bolvassa a kontaktokat és hozzáad egy újat.
+     * @throws IOException
+     */
     @BeforeEach
     void prepare() throws IOException {
         ContactHandler.setup(test);
         ContactHandler.addContact(new Contact("Teszt", InetAddress.getByName("192.0.2.0")));
     }
 
+    /**
+     * Kitörli a kontaktokat (hogy ne zavarjanak máshol).
+     * @throws IOException
+     */
     @AfterEach
     void reset() throws IOException {
         test.removeAll(test);
         ContactHandler.quit();
     }
 
+    /**
+     * Teszteli egy új kontakt hozzáadását, és megnézi, hogy online-e (nem lehet, mert dokumentációs IP cím van megadva).
+     */
     @Test
     void setup() {
         assertEquals(test.getFirst().getName(), "Teszt");
@@ -34,6 +45,10 @@ class ContactHandlerTest {
         assertEquals(test.getFirst().getAddress(), "192.0.2.0");
     }
 
+    /**
+     * Megnézi, hogy létező kontakt el van-e mentve, nem létező pedig tényleg nincs.
+     * @throws UnknownHostException
+     */
     @Test
     void haveContact() throws UnknownHostException {
         Contact c = ContactHandler.haveContact("192.0.2.0");
@@ -48,6 +63,10 @@ class ContactHandlerTest {
         assertEquals(c.getName(), "Valami");
     }
 
+    /**
+     * Ellenőrzi, hogy kilépés utáni visszatöltésnél visszatöltődik-e a korábban elmentett kontakt.
+     * @throws IOException
+     */
     @Test
     void quit() throws IOException {
         ContactHandler.addContact(new Contact("Teszt2", InetAddress.getByName("192.0.2.1")));
@@ -62,6 +81,9 @@ class ContactHandlerTest {
         assertEquals(test.get(1).getAddress(), "192.0.2.0");
     }
 
+    /**
+     * Ellenőrzi, hogy reload után megmarad-e a kontakt.
+     */
     @Test
     void reload() {
         assertEquals(test.getFirst().getName(), "Teszt");
