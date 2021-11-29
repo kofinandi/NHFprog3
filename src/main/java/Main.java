@@ -64,5 +64,4 @@ public class Main {
             window.notifyOnline(c);
         }
     }
-
 }

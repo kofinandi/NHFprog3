@@ -55,7 +55,7 @@ public class Connection {
      * Bezárja a Socketet és lecsatlakoztatja a kontaktról (ekkor az már offline-nak látszik).
      * @throws IOException
      */
-    void close() throws IOException {
+    public void close() throws IOException {
         s.close();
         if (contact != null){
             contact.disconnect();

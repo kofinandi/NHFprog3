@@ -25,9 +25,9 @@ public class WindowFrame extends JFrame {
     private JButton add = new JButton("Add contact");
     private JLabel ipaddress = new JLabel();
 
-    LinkedList<Contact> contacts;
-    DefaultListModel<Contact> listModel;
-    JList<Contact> list;
+    private LinkedList<Contact> contacts;
+    private DefaultListModel<Contact> listModel;
+    private JList<Contact> list;
 
     /**
      * Létrehozza a fő ablakot a megfelelő elrendezéssel.

@@ -6,7 +6,7 @@ import java.time.format.DateTimeFormatter;
  * Ez az osztály felelős az üzenet JListben való megjelenítéséért.
  */
 public class MessageRenderer implements ListCellRenderer<Object> {
-    String name;
+    private String name;
 
     public MessageRenderer(String n){
         name = n;

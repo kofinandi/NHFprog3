@@ -11,7 +11,6 @@ import java.util.LinkedList;
  */
 public class MessageParser extends DefaultHandler {
     private LinkedList<Message> messages;
-    private boolean inelement = false;
     private StringBuilder text;
     private Message read;
     private boolean message;

@@ -14,7 +14,7 @@ import java.time.LocalTime;
  * Ez az osztály felelős a fő ablak üzenet küldő részének a megjelenítéséért.
  */
 public class MessagePanel extends JPanel {
-    Contact contact;
+    private Contact contact;
     private JPanel namepanel = new JPanel();
     private JPanel messages = new JPanel();
     private JPanel sender = new JPanel();
@@ -64,9 +64,9 @@ public class MessagePanel extends JPanel {
         namepanel.add(online, gbc);
 
         //Gombok beállítása
-        send.addActionListener(new sendButtonListener());
-        text.addActionListener(new sendButtonListener());
-        file.addActionListener(new sendFileListener());
+        send.addActionListener(new SendButtonListener());
+        text.addActionListener(new SendButtonListener());
+        file.addActionListener(new SendFileListener());
         file.setSize(30, 30);
 
         sender.setLayout(new GridBagLayout());
@@ -127,7 +127,7 @@ public class MessagePanel extends JPanel {
     /**
      * Ez az osztály felelős a küldés gomb eseménykezeléséért.
      */
-    public class sendButtonListener implements ActionListener {
+    public class SendButtonListener implements ActionListener {
         /**
          * Elküldi az üzenetet a kontakton keresztül és törli a szövegmező tartalmát.
          * @param e A gomb eseménye
@@ -144,7 +144,7 @@ public class MessagePanel extends JPanel {
     /**
      * Ez az osztály felelős a fájl küldés gomb eseménykezeléséért.
      */
-    public class sendFileListener implements ActionListener{
+    public class SendFileListener implements ActionListener{
         /**
          * Megjelenít egy fájl választó ablakot, ahonnan kiválasztott fájlal elindítja a kontakton keresztül a fájl küldését.
          * @param e A gomb eseménye
